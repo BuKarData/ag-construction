@@ -39,6 +39,12 @@ def home(request):
         if inv.zdjecie:
             hero_photo = inv.zdjecie.url
             break
+        for z in inv.zdjecia.all():
+            if z.obraz:
+                hero_photo = z.obraz.url
+                break
+        if hero_photo:
+            break
 
     return render(request, 'home.html', {'inwestycje': inwestycje, 'hero_photo': hero_photo})
 
