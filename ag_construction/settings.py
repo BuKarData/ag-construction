@@ -86,13 +86,15 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-SECURE_SSL_REDIRECT = not DEBUG
+# Railway terminuje SSL na swoim proxy – Django nie może sam robić redirect
+SECURE_SSL_REDIRECT = False
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 
 CSRF_TRUSTED_ORIGINS = config(
     'CSRF_TRUSTED_ORIGINS',
-    default='http://localhost,http://127.0.0.1'
+    default='http://localhost,http://127.0.0.1,https://*.railway.app'
 ).split(',')
 
 COMPANY_NAME = 'AG Construction'
