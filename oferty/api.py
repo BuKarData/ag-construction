@@ -20,7 +20,7 @@ def _open_data_headers(response, etag: str) -> HttpResponse:
     # Dane publiczne (Open Data) – CORS dozwolony dla harwesterów dane.gov.pl
     response["Access-Control-Allow-Origin"] = "*"
     response["Access-Control-Allow-Methods"] = "GET, HEAD, OPTIONS"
-    response["Cache-Control"] = "public, max-age=3600"
+    response["Cache-Control"] = "public, max-age=300"
     response["ETag"] = f'"{etag}"'
     response["Last-Modified"] = datetime.utcnow().strftime("%a, %d %b %Y %H:%M:%S GMT")
     response["Link"] = '<https://creativecommons.org/publicdomain/zero/1.0/>; rel="license"'
