@@ -99,6 +99,25 @@ CSRF_TRUSTED_ORIGINS = config(
     default='http://localhost,http://127.0.0.1,https://*.railway.app'
 ).split(',')
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {'class': 'logging.StreamHandler'},
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
+
 COMPANY_NAME = 'AG Construction'
 COMPANY_NIP = '0000000000'
 COMPANY_REGON = '000000000'
