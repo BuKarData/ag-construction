@@ -1682,15 +1682,16 @@ function showPopup(id) {
         // LEFT: photo viewer
         html += '<div>';
         if (hasPhotos) {
-            const photosJson = JSON.stringify(inv.photos);
-            html += '<div class="popup-main-img-wrap" onclick="openGalleryFromPopup(' + photosJson + ', 0)" id="popupMainImgWrap">';
+            // Store photos globally to avoid JSON-in-onclick quoting issues
+            window._popupPhotos = inv.photos;
+            html += '<div class="popup-main-img-wrap" id="popupMainImgWrap" onclick="openGalleryFromPopup(window._popupPhotos, 0)">';
             html += '<img src="' + inv.photos[0] + '" class="popup-main-img" id="popupMainImg" alt="Zdjęcie">';
             html += '<div class="popup-img-hint"><i class="bi bi-zoom-in"></i> Powiększ</div>';
             html += '</div>';
             if (inv.photos.length > 1) {
                 html += '<div class="popup-thumbs">';
                 inv.photos.forEach((src, i) => {
-                    html += '<img src="' + src + '" class="popup-thumb' + (i === 0 ? ' active' : '') + '" onclick="popupSwitchImg(\'' + src + '\', this, ' + i + ', ' + photosJson + ')" alt="Zdjęcie ' + (i+1) + '">';
+                    html += '<img src="' + src + '" class="popup-thumb' + (i === 0 ? ' active' : '') + '" onclick="popupSwitchImg(' + i + ', this)" alt="Zdjęcie ' + (i+1) + '">';
                 });
                 html += '</div>';
             }
@@ -1764,13 +1765,15 @@ function openGallery(id) {
     document.body.style.overflow = 'hidden';
 }
 
-function popupSwitchImg(src, el, idx, photos) {
+function popupSwitchImg(idx, el) {
+    const photos = window._popupPhotos;
+    if (!photos || !photos[idx]) return;
     const img = document.getElementById('popupMainImg');
-    if (img) img.src = src;
+    if (img) img.src = photos[idx];
     const wrap = document.getElementById('popupMainImgWrap');
     if (wrap) wrap.onclick = function() { openGalleryFromPopup(photos, idx); };
     document.querySelectorAll('.popup-thumb').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
+    if (el) el.classList.add('active');
 }
 
 function openGalleryFromPopup(photos, startIdx) {
