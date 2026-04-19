@@ -1003,23 +1003,22 @@
         a.offer-link:hover .offer-row-name { color: var(--ag-gold); }
 
         .popup-gallery-strip {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 10px;
-            overflow-x: auto;
             margin-bottom: 24px;
-            padding-bottom: 4px;
         }
         .popup-gallery-strip img {
-            width: 160px;
-            height: 110px;
+            width: 100%;
+            height: 160px;
             object-fit: cover;
-            border-radius: 8px;
-            flex-shrink: 0;
+            border-radius: 10px;
             cursor: pointer;
             transition: var(--ag-transition);
             border: 2px solid transparent;
+            display: block;
         }
-        .popup-gallery-strip img:hover { border-color: var(--ag-gold); transform: scale(1.03); }
+        .popup-gallery-strip img:hover { border-color: var(--ag-gold); transform: scale(1.02); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
 
         .popup-standard-block {
             background: rgba(201,151,58,0.07);
