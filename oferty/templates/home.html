@@ -920,7 +920,7 @@
         .modal-box {
             background: var(--ag-white);
             border-radius: var(--ag-radius-lg);
-            max-width: 900px;
+            max-width: 1100px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
@@ -1002,43 +1002,87 @@
         a.offer-link:hover .offer-row { border-color: var(--ag-gold); background: var(--ag-gray-50); }
         a.offer-link:hover .offer-row-name { color: var(--ag-gold); }
 
-        .popup-gallery-strip {
+        .popup-top-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 10px;
-            margin-bottom: 24px;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
         }
-        .popup-gallery-strip img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
+        @media (max-width: 640px) { .popup-top-grid { grid-template-columns: 1fr; } }
+
+        .popup-main-img-wrap {
+            position: relative;
             border-radius: 10px;
-            cursor: pointer;
-            transition: var(--ag-transition);
-            border: 2px solid transparent;
-            display: block;
+            overflow: hidden;
+            background: var(--ag-gray-100);
+            cursor: zoom-in;
+            line-height: 0;
         }
-        .popup-gallery-strip img:hover { border-color: var(--ag-gold); transform: scale(1.02); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+        .popup-main-img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+            transition: transform .4s ease;
+        }
+        .popup-main-img-wrap:hover .popup-main-img { transform: scale(1.03); }
+        .popup-img-hint {
+            position: absolute; bottom: 10px; right: 10px;
+            background: rgba(0,0,0,.55); color: #fff; font-size: 11px;
+            padding: 5px 10px; border-radius: 5px;
+            backdrop-filter: blur(4px); pointer-events: none;
+            display: flex; align-items: center; gap: 5px;
+        }
+
+        .popup-thumbs {
+            display: flex;
+            gap: 7px;
+            margin-top: 8px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+        .popup-thumbs::-webkit-scrollbar { height: 3px; }
+        .popup-thumbs::-webkit-scrollbar-thumb { background: var(--ag-gray-200); border-radius: 3px; }
+        .popup-thumb {
+            width: 62px;
+            height: 46px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+            cursor: pointer;
+            opacity: .6;
+            border: 2px solid transparent;
+            transition: var(--ag-transition);
+        }
+        .popup-thumb:hover, .popup-thumb.active { opacity: 1; border-color: var(--ag-gold); }
 
         .popup-standard-block {
             background: rgba(201,151,58,0.07);
             border-left: 3px solid var(--ag-gold);
             border-radius: 8px;
             padding: 16px 20px;
-            margin-bottom: 24px;
+            height: 100%;
+            max-height: 360px;
+            overflow-y: auto;
         }
+        .popup-standard-block::-webkit-scrollbar { width: 4px; }
+        .popup-standard-block::-webkit-scrollbar-thumb { background: var(--ag-gray-200); border-radius: 4px; }
         .popup-standard-block h4 {
             font-size: 13px;
             font-weight: 700;
             letter-spacing: 1.5px;
             text-transform: uppercase;
             color: var(--ag-gold);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            position: sticky;
+            top: 0;
+            background: rgba(255,250,240,0.95);
+            padding-bottom: 8px;
         }
         .popup-standard-block p {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--ag-gray-800);
-            line-height: 1.65;
+            line-height: 1.7;
             white-space: pre-line;
         }
 
@@ -1632,23 +1676,43 @@ function showPopup(id) {
 
     let html = '';
 
-    // Gallery strip
-    if (inv.photos && inv.photos.length > 0) {
-        html += '<div class="popup-gallery-strip">';
-        inv.photos.forEach((src, i) => {
-            html += `<img src="${src}" alt="Zdjęcie ${i+1}" onclick="openGalleryFromPopup(${JSON.stringify(inv.photos)}, ${i})">`;
-        });
+    // Top 2-column: gallery left, standard right
+    const hasPhotos = inv.photos && inv.photos.length > 0;
+    const hasStandard = !!inv.standard;
+
+    if (hasPhotos || hasStandard || inv.desc) {
+        html += '<div class="popup-top-grid">';
+
+        // LEFT: photo viewer
+        html += '<div>';
+        if (hasPhotos) {
+            const photosJson = JSON.stringify(inv.photos);
+            html += '<div class="popup-main-img-wrap" onclick="openGalleryFromPopup(' + photosJson + ', 0)" id="popupMainImgWrap">';
+            html += '<img src="' + inv.photos[0] + '" class="popup-main-img" id="popupMainImg" alt="Zdjęcie">';
+            html += '<div class="popup-img-hint"><i class="bi bi-zoom-in"></i> Powiększ</div>';
+            html += '</div>';
+            if (inv.photos.length > 1) {
+                html += '<div class="popup-thumbs">';
+                inv.photos.forEach((src, i) => {
+                    html += '<img src="' + src + '" class="popup-thumb' + (i === 0 ? ' active' : '') + '" onclick="popupSwitchImg(\'' + src + '\', this, ' + i + ', ' + photosJson + ')" alt="Zdjęcie ' + (i+1) + '">';
+                });
+                html += '</div>';
+            }
+        } else if (inv.desc) {
+            html += '<p style="color:var(--ag-gray-600);font-size:14px;line-height:1.65;">' + inv.desc + '</p>';
+        }
         html += '</div>';
-    }
 
-    // Description
-    if (inv.desc) {
-        html += `<p style="color:var(--ag-gray-600);font-size:14px;margin-bottom:24px;line-height:1.65;">${inv.desc}</p>`;
-    }
+        // RIGHT: standard or desc
+        html += '<div>';
+        if (hasStandard) {
+            html += '<div class="popup-standard-block"><h4><i class="bi bi-gem"></i>&nbsp; Standard wykończenia</h4><p>' + inv.standard + '</p></div>';
+        } else if (inv.desc && hasPhotos) {
+            html += '<p style="color:var(--ag-gray-600);font-size:14px;line-height:1.65;">' + inv.desc + '</p>';
+        }
+        html += '</div>';
 
-    // Standard wykończenia
-    if (inv.standard) {
-        html += `<div class="popup-standard-block"><h4><i class="bi bi-gem"></i>&nbsp; Standard wykończenia</h4><p>${inv.standard}</p></div>`;
+        html += '</div>';
     }
 
     // Offer rows (clickable)
@@ -1702,6 +1766,15 @@ function openGallery(id) {
     updateGallery();
     document.getElementById('galleryModal').classList.add('active');
     document.body.style.overflow = 'hidden';
+}
+
+function popupSwitchImg(src, el, idx, photos) {
+    const img = document.getElementById('popupMainImg');
+    if (img) img.src = src;
+    const wrap = document.getElementById('popupMainImgWrap');
+    if (wrap) wrap.onclick = function() { openGalleryFromPopup(photos, idx); };
+    document.querySelectorAll('.popup-thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
 }
 
 function openGalleryFromPopup(photos, startIdx) {
