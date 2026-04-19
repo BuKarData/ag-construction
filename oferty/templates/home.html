@@ -1,0 +1,1687 @@
+{% load oferty_filters %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AG Construction – Deweloper Mieszkaniowy</title>
+    <meta name="description" content="AG Construction – nowoczesne inwestycje mieszkaniowe. Sprawdź nasze oferty apartamentów i mieszkań.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --ag-navy: #0D1B2A;
+            --ag-navy-light: #1C2F4A;
+            --ag-gold: #C9973A;
+            --ag-gold-light: #E8B857;
+            --ag-white: #FFFFFF;
+            --ag-gray-50: #F8F9FA;
+            --ag-gray-100: #F1F3F5;
+            --ag-gray-200: #E9ECEF;
+            --ag-gray-600: #6C757D;
+            --ag-gray-800: #343A40;
+            --ag-text: #1A1F2E;
+            --ag-shadow: 0 4px 24px rgba(13,27,42,0.10);
+            --ag-shadow-lg: 0 12px 48px rgba(13,27,42,0.16);
+            --ag-radius: 12px;
+            --ag-radius-lg: 20px;
+            --ag-transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--ag-text);
+            background: var(--ag-white);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        /* ─── NAVBAR ─── */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 5%;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: transparent;
+            transition: var(--ag-transition);
+        }
+
+        .navbar.scrolled {
+            background: var(--ag-navy);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 44px;
+            height: 44px;
+            background: var(--ag-gold);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--ag-navy);
+            letter-spacing: -1px;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .brand-text .brand-main {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--ag-white);
+            letter-spacing: 2px;
+        }
+
+        .brand-text .brand-sub {
+            font-size: 10px;
+            color: var(--ag-gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: var(--ag-transition);
+        }
+
+        .nav-links a:hover { color: var(--ag-gold); }
+
+        .btn-nav {
+            background: var(--ag-gold);
+            color: var(--ag-navy) !important;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 700 !important;
+            letter-spacing: 0.5px;
+            transition: var(--ag-transition) !important;
+        }
+
+        .btn-nav:hover {
+            background: var(--ag-gold-light) !important;
+            transform: translateY(-1px);
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: var(--ag-navy);
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(13,27,42,0.97) 0%, rgba(28,47,74,0.90) 50%, rgba(13,27,42,0.85) 100%),
+                url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=80') center/cover no-repeat;
+        }
+
+        .hero-accent {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(201,151,58,0.08) 100%);
+            clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+
+        .hero-grid-lines {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(201,151,58,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201,151,58,0.04) 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 0 5%;
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+            padding-top: 72px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(201,151,58,0.15);
+            border: 1px solid rgba(201,151,58,0.3);
+            color: var(--ag-gold);
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.4rem, 4vw, 3.8rem);
+            line-height: 1.1;
+            color: var(--ag-white);
+            margin-bottom: 24px;
+        }
+
+        .hero-title .accent { color: var(--ag-gold); }
+
+        .hero-desc {
+            font-size: 18px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: 40px;
+            max-width: 480px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-ag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--ag-gold);
+            color: var(--ag-navy);
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.3px;
+            transition: var(--ag-transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary-ag:hover {
+            background: var(--ag-gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(201,151,58,0.4);
+            color: var(--ag-navy);
+            text-decoration: none;
+        }
+
+        .btn-outline-ag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            color: var(--ag-white);
+            padding: 15px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            border: 1.5px solid rgba(255,255,255,0.3);
+            transition: var(--ag-transition);
+        }
+
+        .btn-outline-ag:hover {
+            border-color: var(--ag-gold);
+            color: var(--ag-gold);
+            text-decoration: none;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,0.08);
+            border-radius: var(--ag-radius);
+            overflow: hidden;
+            margin-top: 56px;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.04);
+            padding: 28px 20px;
+            text-align: center;
+            transition: var(--ag-transition);
+        }
+
+        .stat-item:hover { background: rgba(201,151,58,0.1); }
+
+        .stat-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--ag-gold);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Hero right: investment cards preview */
+        .hero-right {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .hero-inv-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--ag-radius);
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            transition: var(--ag-transition);
+            text-decoration: none;
+        }
+
+        .hero-inv-card:hover {
+            background: rgba(201,151,58,0.12);
+            border-color: rgba(201,151,58,0.3);
+            transform: translateX(4px);
+            text-decoration: none;
+        }
+
+        .hero-inv-icon {
+            width: 52px;
+            height: 52px;
+            background: rgba(201,151,58,0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--ag-gold);
+            flex-shrink: 0;
+        }
+
+        .hero-inv-info { flex: 1; }
+
+        .hero-inv-name {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--ag-white);
+            margin-bottom: 4px;
+        }
+
+        .hero-inv-meta {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .hero-inv-arrow {
+            color: var(--ag-gold);
+            font-size: 18px;
+        }
+
+        /* ─── SECTION COMMON ─── */
+        .section {
+            padding: 100px 5%;
+        }
+
+        .section-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--ag-gold);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            line-height: 1.2;
+            color: var(--ag-navy);
+            margin-bottom: 20px;
+        }
+
+        .section-desc {
+            font-size: 17px;
+            color: var(--ag-gray-600);
+            line-height: 1.7;
+            max-width: 600px;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+        }
+
+        /* ─── WHY US ─── */
+        .why-us {
+            background: var(--ag-gray-50);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: var(--ag-white);
+            border-radius: var(--ag-radius-lg);
+            padding: 36px 28px;
+            transition: var(--ag-transition);
+            border: 1px solid var(--ag-gray-200);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--ag-shadow-lg);
+            border-color: var(--ag-gold);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--ag-navy), var(--ag-navy-light));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: var(--ag-gold);
+            margin-bottom: 24px;
+        }
+
+        .feature-title {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: var(--ag-navy);
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            color: var(--ag-gray-600);
+            line-height: 1.65;
+        }
+
+        /* ─── INVESTMENTS ─── */
+        .investments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 28px;
+        }
+
+        .inv-card {
+            background: var(--ag-white);
+            border-radius: var(--ag-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--ag-shadow);
+            transition: var(--ag-transition);
+            border: 1px solid var(--ag-gray-200);
+            cursor: pointer;
+        }
+
+        .inv-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--ag-shadow-lg);
+        }
+
+        .inv-card-image {
+            position: relative;
+            height: 220px;
+            background: linear-gradient(135deg, var(--ag-navy), var(--ag-navy-light));
+            overflow: hidden;
+        }
+
+        .inv-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .inv-card:hover .inv-card-image img {
+            transform: scale(1.05);
+        }
+
+        .inv-card-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .inv-card-image-placeholder i {
+            font-size: 48px;
+            color: var(--ag-gold);
+            opacity: 0.5;
+        }
+
+        .inv-card-badges {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge-status {
+            padding: 5px 12px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-active {
+            background: rgba(34,197,94,0.9);
+            color: white;
+        }
+
+        .badge-completed {
+            background: rgba(201,151,58,0.9);
+            color: var(--ag-navy);
+        }
+
+        .inv-card-gallery-btn {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: var(--ag-transition);
+        }
+
+        .inv-card-gallery-btn:hover { background: var(--ag-gold); color: var(--ag-navy); }
+
+        .inv-card-body {
+            padding: 28px;
+        }
+
+        .inv-card-name {
+            font-size: 20px;
+            color: var(--ag-navy);
+            margin-bottom: 8px;
+        }
+
+        .inv-card-address {
+            font-size: 13px;
+            color: var(--ag-gray-600);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .inv-card-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--ag-gray-200);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .inv-stat {
+            background: var(--ag-gray-50);
+            padding: 14px 10px;
+            text-align: center;
+        }
+
+        .inv-stat-val {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--ag-navy);
+        }
+
+        .inv-stat-lbl {
+            font-size: 11px;
+            color: var(--ag-gray-600);
+            letter-spacing: 0.5px;
+        }
+
+        .inv-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .inv-deadline {
+            font-size: 12px;
+            color: var(--ag-gray-600);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-see-offers {
+            background: var(--ag-navy);
+            color: var(--ag-white);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--ag-transition);
+        }
+
+        .btn-see-offers:hover {
+            background: var(--ag-gold);
+            color: var(--ag-navy);
+        }
+
+        /* ─── CTA STRIP ─── */
+        .cta-strip {
+            background: linear-gradient(135deg, var(--ag-navy) 0%, var(--ag-navy-light) 100%);
+            padding: 80px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-strip::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,151,58,0.12) 0%, transparent 70%);
+        }
+
+        .cta-strip-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            position: relative;
+        }
+
+        .cta-strip h2 {
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            color: var(--ag-white);
+            margin-bottom: 12px;
+        }
+
+        .cta-strip p {
+            color: rgba(255,255,255,0.6);
+            font-size: 16px;
+        }
+
+        .cta-contact-grid {
+            display: flex;
+            gap: 24px;
+        }
+
+        .cta-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 16px 24px;
+            text-decoration: none;
+            transition: var(--ag-transition);
+            white-space: nowrap;
+        }
+
+        .cta-contact-item:hover {
+            background: rgba(201,151,58,0.15);
+            border-color: var(--ag-gold);
+            text-decoration: none;
+        }
+
+        .cta-contact-item i {
+            font-size: 22px;
+            color: var(--ag-gold);
+        }
+
+        .cta-contact-item span {
+            color: var(--ag-white);
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* ─── ABOUT ─── */
+        .about {
+            background: var(--ag-gray-50);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-visual {
+            position: relative;
+        }
+
+        .about-img-main {
+            width: 100%;
+            border-radius: var(--ag-radius-lg);
+            height: 420px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--ag-navy), var(--ag-navy-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ag-gold);
+            font-size: 80px;
+        }
+
+        .about-badge-float {
+            position: absolute;
+            bottom: -24px;
+            right: -24px;
+            background: var(--ag-gold);
+            color: var(--ag-navy);
+            border-radius: var(--ag-radius);
+            padding: 24px 28px;
+            box-shadow: var(--ag-shadow-lg);
+        }
+
+        .about-badge-float .big-num {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .about-badge-float .big-label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .about-values {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .value-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .value-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(201,151,58,0.12);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ag-gold);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .value-text h4 {
+            font-size: 14px;
+            color: var(--ag-navy);
+            margin-bottom: 4px;
+        }
+
+        .value-text p {
+            font-size: 13px;
+            color: var(--ag-gray-600);
+            line-height: 1.5;
+        }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            background: var(--ag-navy);
+            color: rgba(255,255,255,0.7);
+            padding: 70px 5% 0;
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 48px;
+            padding-bottom: 48px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .footer-brand .brand-desc {
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 20px;
+            max-width: 280px;
+        }
+
+        .footer-col-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--ag-white);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--ag-transition);
+        }
+
+        .footer-links a:hover { color: var(--ag-gold); }
+
+        .footer-contact-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .footer-contact-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .footer-contact-list i {
+            color: var(--ag-gold);
+            font-size: 16px;
+            margin-top: 1px;
+        }
+
+        .footer-bottom {
+            padding: 24px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            transition: var(--ag-transition);
+        }
+
+        .footer-bottom-links a:hover { color: var(--ag-gold); }
+
+        /* ─── MODALS ─── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: var(--ag-white);
+            border-radius: var(--ag-radius-lg);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            padding: 28px 32px 20px;
+            border-bottom: 1px solid var(--ag-gray-200);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            background: var(--ag-white);
+            border-radius: var(--ag-radius-lg) var(--ag-radius-lg) 0 0;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            color: var(--ag-navy);
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: var(--ag-gray-600);
+            margin-top: 4px;
+        }
+
+        .modal-close {
+            background: var(--ag-gray-100);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--ag-gray-600);
+            flex-shrink: 0;
+            transition: var(--ag-transition);
+        }
+
+        .modal-close:hover { background: var(--ag-gray-200); color: var(--ag-navy); }
+
+        .modal-body { padding: 28px 32px; }
+
+        .offer-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-radius: var(--ag-radius);
+            border: 1px solid var(--ag-gray-200);
+            margin-bottom: 12px;
+            transition: var(--ag-transition);
+        }
+
+        .offer-row:hover { border-color: var(--ag-gold); background: var(--ag-gray-50); }
+
+        .offer-row-num {
+            width: 48px;
+            height: 48px;
+            background: var(--ag-navy);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--ag-gold);
+            flex-shrink: 0;
+        }
+
+        .offer-row-info { flex: 1; }
+
+        .offer-row-name {
+            font-weight: 600;
+            color: var(--ag-navy);
+            font-size: 15px;
+        }
+
+        .offer-row-meta {
+            font-size: 13px;
+            color: var(--ag-gray-600);
+            margin-top: 3px;
+        }
+
+        .offer-row-price {
+            text-align: right;
+        }
+
+        .offer-row-price .price-val {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            color: var(--ag-navy);
+        }
+
+        .offer-row-price .price-m2 {
+            font-size: 12px;
+            color: var(--ag-gray-600);
+        }
+
+        .badge-status-sm {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .badge-available { background: #D1FAE5; color: #065F46; }
+        .badge-sold { background: #FEE2E2; color: #991B1B; }
+        .badge-reserved { background: #FEF3C7; color: #92400E; }
+        .badge-construction { background: #DBEAFE; color: #1E40AF; }
+
+        /* ─── GALLERY MODAL ─── */
+        .gallery-modal-box {
+            background: var(--ag-navy);
+            border-radius: var(--ag-radius-lg);
+            max-width: 960px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .gallery-main-img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-thumbs {
+            display: flex;
+            gap: 8px;
+            padding: 16px;
+            overflow-x: auto;
+        }
+
+        .gallery-thumb {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: var(--ag-transition);
+            flex-shrink: 0;
+        }
+
+        .gallery-thumb:hover, .gallery-thumb.active { opacity: 1; }
+
+        .gallery-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+        }
+
+        .gallery-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: var(--ag-transition);
+        }
+
+        .gallery-btn:hover { background: var(--ag-gold); color: var(--ag-navy); }
+
+        /* ─── MOBILE ─── */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: block; }
+            .hero-content { grid-template-columns: 1fr; gap: 40px; }
+            .hero-right { display: none; }
+            .hero-stats { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .about-grid { grid-template-columns: 1fr; }
+            .investments-grid { grid-template-columns: 1fr; }
+            .cta-strip-inner { flex-direction: column; }
+            .cta-contact-grid { flex-direction: column; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+            .about-badge-float { right: 0; bottom: -16px; }
+        }
+
+        /* ─── SCROLL REVEAL ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+    <a href="/" class="navbar-brand">
+        <div class="brand-logo">AG</div>
+        <div class="brand-text">
+            <span class="brand-main">AG</span>
+            <span class="brand-sub">Construction</span>
+        </div>
+    </a>
+    <ul class="nav-links">
+        <li><a href="#inwestycje">Inwestycje</a></li>
+        <li><a href="/oferty/">Oferty</a></li>
+        <li><a href="#o-nas">O nas</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+        <li><a href="/oferty/" class="btn-nav">Zobacz oferty</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger"><i class="bi bi-list"></i></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-accent"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="hero-content">
+        <div class="hero-left">
+            <div class="hero-badge">
+                <i class="bi bi-building"></i>
+                Deweloper Premium
+            </div>
+            <h1 class="hero-title">
+                Budujemy<br>
+                <span class="accent">Twoje wymarzone</span><br>
+                miejsce
+            </h1>
+            <p class="hero-desc">
+                AG Construction to deweloper z wieloletnim doświadczeniem, oferujący nowoczesne apartamenty i mieszkania w starannie wybranych lokalizacjach.
+            </p>
+            <div class="hero-actions">
+                <a href="#inwestycje" class="btn-primary-ag">
+                    <i class="bi bi-search"></i>
+                    Przeglądaj inwestycje
+                </a>
+                <a href="#kontakt" class="btn-outline-ag">
+                    <i class="bi bi-telephone"></i>
+                    Skontaktuj się
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Lat doświadczenia</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{% if inwestycje %}{{ inwestycje|length }}{% else %}—{% endif %}</div>
+                    <div class="stat-label">Inwestycji</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Zadowolonych klientów</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            {% if inwestycje %}
+                {% for inv in inwestycje|slice:":4" %}
+                <a href="#" class="hero-inv-card" onclick="showPopup({{ inv.id }}); return false;">
+                    <div class="hero-inv-icon">
+                        <i class="bi bi-buildings"></i>
+                    </div>
+                    <div class="hero-inv-info">
+                        <div class="hero-inv-name">{{ inv.nazwa }}</div>
+                        <div class="hero-inv-meta">
+                            <i class="bi bi-geo-alt"></i> {{ inv.adres }}
+                            {% if inv.oferty.count %}
+                            &nbsp;·&nbsp; {{ inv.oferty.count }} ofert
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="hero-inv-arrow"><i class="bi bi-arrow-right"></i></div>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="hero-inv-card" style="opacity:0.4; cursor:default;">
+                    <div class="hero-inv-icon"><i class="bi bi-buildings"></i></div>
+                    <div class="hero-inv-info">
+                        <div class="hero-inv-name">Wkrótce nowe inwestycje</div>
+                        <div class="hero-inv-meta">Dodaj pierwsze inwestycje w panelu administracyjnym</div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- WHY US -->
+<section class="section why-us" id="dlaczego-my">
+    <div class="section-inner">
+        <div class="section-header">
+            <span class="section-label">Dlaczego AG Construction</span>
+            <h2 class="section-title">Jakość, której możesz zaufać</h2>
+            <p class="section-desc">Każda inwestycja tworzona jest z pasją i dbałością o szczegóły, by spełniała najwyższe standardy.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="bi bi-award"></i></div>
+                <h3 class="feature-title">15+ lat na rynku</h3>
+                <p class="feature-desc">Wieloletnie doświadczenie w branży deweloperskiej gwarantuje profesjonalizm i solidność na każdym etapie inwestycji.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="bi bi-gem"></i></div>
+                <h3 class="feature-title">Wysoki standard</h3>
+                <p class="feature-desc">Stosujemy wyłącznie materiały i technologie najwyższej jakości, dbając o trwałość i estetykę każdego budynku.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="bi bi-geo-alt"></i></div>
+                <h3 class="feature-title">Świetne lokalizacje</h3>
+                <p class="feature-desc">Każdą inwestycję realizujemy w przemyślanie dobranych miejscach — blisko centrum, zieleni i komunikacji miejskiej.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                <h3 class="feature-title">Bezpieczna transakcja</h3>
+                <p class="feature-desc">Działamy w pełnej transparentności. Rachunek powierniczy, umowy deweloperskie zgodne z ustawą i rzetelna obsługa klienta.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- INVESTMENTS -->
+<section class="section" id="inwestycje">
+    <div class="section-inner">
+        <div class="section-header" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+            <div>
+                <span class="section-label">Nasze projekty</span>
+                <h2 class="section-title">Aktualne inwestycje</h2>
+            </div>
+            <a href="/oferty/" class="btn-primary-ag" style="align-self:flex-start;">
+                Wszystkie oferty <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        {% if inwestycje %}
+        <div class="investments-grid">
+            {% for inv in inwestycje %}
+            <div class="inv-card reveal" onclick="showPopup({{ inv.id }})">
+                <div class="inv-card-image">
+                    {% if inv.zdjecie %}
+                    <img src="{{ inv.zdjecie.url }}" alt="{{ inv.nazwa }}">
+                    {% else %}
+                    <div class="inv-card-image-placeholder">
+                        <i class="bi bi-building"></i>
+                        <span style="font-size:13px;color:rgba(255,255,255,0.3);">{{ inv.nazwa }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="inv-card-badges">
+                        {% if inv.termin_zakonczenia %}
+                        <span class="badge-status badge-active">W sprzedaży</span>
+                        {% endif %}
+                    </div>
+                    {% if inv.zdjecia.count > 0 %}
+                    <button class="inv-card-gallery-btn" onclick="event.stopPropagation(); openGallery({{ inv.id }})">
+                        <i class="bi bi-images"></i> {{ inv.zdjecia.count }} zdjęć
+                    </button>
+                    {% endif %}
+                </div>
+                <div class="inv-card-body">
+                    <h3 class="inv-card-name">{{ inv.nazwa }}</h3>
+                    <p class="inv-card-address">
+                        <i class="bi bi-geo-alt-fill" style="color:var(--ag-gold)"></i>
+                        {{ inv.adres }}
+                    </p>
+                    <div class="inv-card-stats">
+                        <div class="inv-stat">
+                            <div class="inv-stat-val">{{ inv.oferty.count }}</div>
+                            <div class="inv-stat-lbl">Lokale</div>
+                        </div>
+                        <div class="inv-stat">
+                            <div class="inv-stat-val">
+                                {% with dostepne=inv.oferty.all %}
+                                {% for o in dostepne %}{% if o.status == 'dostepne' %}{% if forloop.last %}{{ forloop.counter }}{% endif %}{% endif %}{% endfor %}
+                                {% endwith %}
+                                {% comment %}Simpler: show count of available{% endcomment %}
+                            </div>
+                            <div class="inv-stat-lbl">Dostępne</div>
+                        </div>
+                        <div class="inv-stat">
+                            <div class="inv-stat-val">
+                                {% if inv.termin_zakonczenia %}{{ inv.termin_zakonczenia.year }}{% else %}—{% endif %}
+                            </div>
+                            <div class="inv-stat-lbl">Rok oddania</div>
+                        </div>
+                    </div>
+                    <div class="inv-card-footer">
+                        <div class="inv-deadline">
+                            {% if inv.termin_zakonczenia %}
+                            <i class="bi bi-calendar3"></i>
+                            Termin: {{ inv.termin_zakonczenia|date:"m.Y" }}
+                            {% else %}
+                            <i class="bi bi-info-circle"></i>
+                            Termin do ustalenia
+                            {% endif %}
+                        </div>
+                        <button class="btn-see-offers">
+                            Oferty <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align:center;padding:80px 20px;color:var(--ag-gray-600);">
+            <i class="bi bi-buildings" style="font-size:56px;color:var(--ag-gray-200);display:block;margin-bottom:20px;"></i>
+            <p>Brak aktywnych inwestycji. Dodaj pierwszą w panelu administracyjnym.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- CTA STRIP -->
+<section class="cta-strip" id="kontakt">
+    <div class="cta-strip-inner">
+        <div>
+            <h2>Masz pytania? Jesteśmy do dyspozycji</h2>
+            <p>Nasi doradcy pomogą Ci wybrać idealny lokal i przeprowadzą przez cały proces zakupu.</p>
+        </div>
+        <div class="cta-contact-grid">
+            <a href="tel:+48000000000" class="cta-contact-item">
+                <i class="bi bi-telephone-fill"></i>
+                <span>+48 000 000 000</span>
+            </a>
+            <a href="mailto:biuro@agconstruction.pl" class="cta-contact-item">
+                <i class="bi bi-envelope-fill"></i>
+                <span>biuro@agconstruction.pl</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section about" id="o-nas">
+    <div class="section-inner">
+        <div class="about-grid">
+            <div class="about-visual">
+                <div class="about-img-main">
+                    <i class="bi bi-buildings"></i>
+                </div>
+                <div class="about-badge-float">
+                    <div class="big-num">15+</div>
+                    <div class="big-label">Lat doświadczenia</div>
+                </div>
+            </div>
+            <div class="about-content">
+                <span class="section-label">O nas</span>
+                <h2 class="section-title">Kim jest AG Construction?</h2>
+                <p style="color:var(--ag-gray-600);font-size:16px;line-height:1.75;margin-bottom:28px;">
+                    AG Construction to firma deweloperska z wieloletnim doświadczeniem na rynku nieruchomości.
+                    Realizujemy inwestycje mieszkaniowe, które łączą nowoczesną architekturę z funkcjonalnością i wysokim standardem wykończenia.
+                </p>
+                <p style="color:var(--ag-gray-600);font-size:16px;line-height:1.75;margin-bottom:32px;">
+                    Naszym priorytetem jest satysfakcja klienta — od pierwszego kontaktu, przez podpisanie umowy,
+                    aż po odbiór kluczy. Każdy projekt realizujemy z zaangażowaniem i odpowiedzialnością.
+                </p>
+                <div class="about-values">
+                    <div class="value-item">
+                        <div class="value-icon"><i class="bi bi-check2-circle"></i></div>
+                        <div class="value-text">
+                            <h4>Terminowość</h4>
+                            <p>Dotrzymujemy ustalonych terminów realizacji.</p>
+                        </div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon"><i class="bi bi-eye"></i></div>
+                        <div class="value-text">
+                            <h4>Transparentność</h4>
+                            <p>Jasne umowy i rzetelne warunki współpracy.</p>
+                        </div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon"><i class="bi bi-tools"></i></div>
+                        <div class="value-text">
+                            <h4>Jakość wykonania</h4>
+                            <p>Materiały i technologie najwyższej klasy.</p>
+                        </div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon"><i class="bi bi-people"></i></div>
+                        <div class="value-text">
+                            <h4>Obsługa klienta</h4>
+                            <p>Indywidualne podejście do każdego nabywcy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="/" class="navbar-brand" style="margin-bottom:0;">
+                    <div class="brand-logo">AG</div>
+                    <div class="brand-text">
+                        <span class="brand-main">AG</span>
+                        <span class="brand-sub">Construction</span>
+                    </div>
+                </a>
+                <p class="brand-desc">
+                    AG Construction – deweloper stawiający na jakość, nowoczesny design i doskonałą lokalizację. Budujemy Twoje miejsce.
+                </p>
+            </div>
+            <div>
+                <div class="footer-col-title">Nawigacja</div>
+                <ul class="footer-links">
+                    <li><a href="#inwestycje">Inwestycje</a></li>
+                    <li><a href="/oferty/">Wszystkie oferty</a></li>
+                    <li><a href="#o-nas">O firmie</a></li>
+                    <li><a href="#kontakt">Kontakt</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-col-title">Oferty</div>
+                <ul class="footer-links">
+                    <li><a href="/oferty/?status=dostepne">Dostępne</a></li>
+                    <li><a href="/oferty/?status=w_budowie">W budowie</a></li>
+                    <li><a href="/oferty/?status=rezerwacja">Rezerwacje</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-col-title">Kontakt</div>
+                <ul class="footer-contact-list">
+                    <li>
+                        <i class="bi bi-geo-alt"></i>
+                        <span>ul. Budowlana 1<br>00-000 Warszawa</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-telephone"></i>
+                        <a href="tel:+48000000000" style="color:rgba(255,255,255,0.7);text-decoration:none;">+48 000 000 000</a>
+                    </li>
+                    <li>
+                        <i class="bi bi-envelope"></i>
+                        <a href="mailto:biuro@agconstruction.pl" style="color:rgba(255,255,255,0.7);text-decoration:none;">biuro@agconstruction.pl</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2025 AG Construction. Wszelkie prawa zastrzeżone.</span>
+            <div class="footer-bottom-links">
+                <a href="#">Polityka prywatności</a>
+                <a href="#">Regulamin</a>
+                <a href="#">RODO</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- INVESTMENT POPUP MODAL -->
+<div class="modal-overlay" id="popupModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <div>
+                <h2 class="modal-title" id="popupTitle">Inwestycja</h2>
+                <p class="modal-subtitle" id="popupAddress"></p>
+            </div>
+            <button class="modal-close" onclick="hidePopup()">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="popupBody"></div>
+    </div>
+</div>
+
+<!-- GALLERY MODAL -->
+<div class="modal-overlay" id="galleryModal">
+    <div class="gallery-modal-box">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;">
+            <span style="color:white;font-weight:600;" id="galleryTitle">Galeria</span>
+            <button class="modal-close" onclick="closeGallery()" style="background:rgba(255,255,255,0.1);color:white;">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+        <img id="galleryMainImg" class="gallery-main-img" src="" alt="Zdjęcie inwestycji">
+        <div class="gallery-thumbs" id="galleryThumbs"></div>
+    </div>
+</div>
+
+<!-- INVESTMENT DATA (for JS) -->
+<script>
+const investmentsData = {
+    {% for inv in inwestycje %}
+    {{ inv.id }}: {
+        name: {{ inv.nazwa|default:""|escapejs|json_script:"_"|slice:"1:-1" }},
+        address: "{{ inv.adres|escapejs }}",
+        desc: "{{ inv.opis|default:""|escapejs }}",
+        photos: [{% for z in inv.zdjecia.all %}"{{ z.obraz.url }}"{% if not forloop.last %},{% endif %}{% endfor %}],
+        offers: [
+            {% for o in inv.oferty.all %}
+            {
+                id: {{ o.id }},
+                num: "{{ o.numer_lokalu|default:"-"|escapejs }}",
+                adres: "{{ o.adres|escapejs }}",
+                metraz: {% if o.metraz %}"{{ o.metraz }}"{% else %}null{% endif %},
+                pokoje: {{ o.pokoje }},
+                status: "{{ o.status }}",
+                cena: {% if o._aktualna_cena %}"{{ o._aktualna_cena }}"{% else %}null{% endif %},
+                cena_m2: {% if o._cena_m2 %}"{{ o._cena_m2 }}"{% else %}null{% endif %}
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+};
+
+function showPopup(id) {
+    const inv = investmentsData[id];
+    if (!inv) return;
+
+    document.getElementById('popupTitle').textContent = inv.name;
+    document.getElementById('popupAddress').innerHTML = '<i class="bi bi-geo-alt"></i> ' + inv.address;
+
+    const statusMap = {
+        dostepne: { label: 'Dostępne', cls: 'badge-available' },
+        sprzedane: { label: 'Sprzedane', cls: 'badge-sold' },
+        rezerwacja: { label: 'Rezerwacja', cls: 'badge-reserved' },
+        w_budowie: { label: 'W budowie', cls: 'badge-construction' }
+    };
+
+    let html = '';
+    if (inv.desc) {
+        html += `<p style="color:var(--ag-gray-600);font-size:14px;margin-bottom:24px;line-height:1.65;">${inv.desc}</p>`;
+    }
+
+    if (inv.offers.length > 0) {
+        html += `<h4 style="font-size:16px;color:var(--ag-navy);margin-bottom:16px;">Lokale (${inv.offers.length})</h4>`;
+        inv.offers.forEach(o => {
+            const s = statusMap[o.status] || { label: o.status, cls: '' };
+            const cena = o.cena ? parseInt(o.cena).toLocaleString('pl-PL') + ' PLN' : '—';
+            const m2 = o.cena_m2 ? parseInt(o.cena_m2).toLocaleString('pl-PL') + ' PLN/m²' : '';
+            html += `
+            <div class="offer-row">
+                <div class="offer-row-num">${o.num}</div>
+                <div class="offer-row-info">
+                    <div class="offer-row-name">${o.adres}</div>
+                    <div class="offer-row-meta">
+                        ${o.metraz ? o.metraz + ' m²' : ''} ${o.pokoje ? '· ' + o.pokoje + ' pok.' : ''}
+                        &nbsp; <span class="badge-status-sm ${s.cls}">${s.label}</span>
+                    </div>
+                </div>
+                <div class="offer-row-price">
+                    <div class="price-val">${cena}</div>
+                    <div class="price-m2">${m2}</div>
+                </div>
+            </div>`;
+        });
+    } else {
+        html += '<p style="color:var(--ag-gray-600);text-align:center;padding:32px;">Brak ofert dla tej inwestycji.</p>';
+    }
+
+    document.getElementById('popupBody').innerHTML = html;
+    document.getElementById('popupModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function hidePopup() {
+    document.getElementById('popupModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+let currentGalleryImgs = [];
+let currentGalleryIdx = 0;
+
+function openGallery(id) {
+    const inv = investmentsData[id];
+    if (!inv || !inv.photos.length) return;
+
+    currentGalleryImgs = inv.photos;
+    currentGalleryIdx = 0;
+    document.getElementById('galleryTitle').textContent = inv.name;
+    updateGallery();
+    document.getElementById('galleryModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function updateGallery() {
+    document.getElementById('galleryMainImg').src = currentGalleryImgs[currentGalleryIdx];
+    const thumbs = document.getElementById('galleryThumbs');
+    thumbs.innerHTML = currentGalleryImgs.map((src, i) =>
+        `<img src="${src}" class="gallery-thumb ${i === currentGalleryIdx ? 'active' : ''}" onclick="setGalleryImg(${i})">`
+    ).join('');
+}
+
+function setGalleryImg(idx) {
+    currentGalleryIdx = idx;
+    updateGallery();
+}
+
+function closeGallery() {
+    document.getElementById('galleryModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Close modals on overlay click
+document.getElementById('popupModal').addEventListener('click', function(e) {
+    if (e.target === this) hidePopup();
+});
+document.getElementById('galleryModal').addEventListener('click', function(e) {
+    if (e.target === this) closeGallery();
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    const nb = document.getElementById('navbar');
+    nb.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            observer.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
