@@ -22,104 +22,191 @@
         body { font-family:'Inter',sans-serif; color:var(--ag-text); background:var(--ag-gray-50); }
         h1,h2,h3,h4,h5 { font-family:'Montserrat',sans-serif; font-weight:700; }
 
+        /* ── NAVBAR ── */
         .navbar {
             background: var(--ag-navy);
             padding: 0 5%; height: 64px;
             display:flex; align-items:center; justify-content:space-between;
             box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-            position:sticky; top:0; z-index:100;
+            position:sticky; top:0; z-index:200;
         }
         .navbar-brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
         .brand-logo { width:38px; height:38px; background:var(--ag-gold); border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-weight:800; font-size:16px; color:var(--ag-navy); }
         .brand-main { font-family:'Montserrat',sans-serif; font-weight:800; font-size:15px; color:#fff; letter-spacing:2px; }
-        .brand-sub { font-size:10px; color:var(--ag-gold); letter-spacing:3px; text-transform:uppercase; }
+        .brand-sub { font-size:10px; color:var(--ag-gold); letter-spacing:3px; text-transform:uppercase; display:block; }
         .nav-back { color:rgba(255,255,255,0.7); text-decoration:none; font-size:14px; display:flex; align-items:center; gap:6px; transition:var(--ag-transition); }
         .nav-back:hover { color:var(--ag-gold); }
 
-        .page-wrap { max-width:1100px; margin:0 auto; padding:40px 5% 80px; }
+        /* ── LAYOUT ── */
+        .page-wrap { max-width:1200px; margin:0 auto; padding:36px 5% 80px; }
 
-        .breadcrumb { font-size:13px; color:var(--ag-gray-600); margin-bottom:24px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-        .breadcrumb a { color:var(--ag-gray-600); text-decoration:none; } .breadcrumb a:hover { color:var(--ag-gold); }
-        .breadcrumb-sep { color:var(--ag-gray-200); }
+        .breadcrumb { font-size:13px; color:var(--ag-gray-600); margin-bottom:28px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+        .breadcrumb a { color:var(--ag-gray-600); text-decoration:none; }
+        .breadcrumb a:hover { color:var(--ag-gold); }
+        .breadcrumb i { font-size:10px; color:var(--ag-gray-200); }
 
-        .detail-grid { display:grid; grid-template-columns:1fr 340px; gap:32px; align-items:start; }
-        @media (max-width:900px) { .detail-grid { grid-template-columns:1fr; } }
+        /* TOP GRID: image left, sidebar right */
+        .top-grid {
+            display:grid;
+            grid-template-columns: 1fr 360px;
+            gap:28px;
+            align-items:start;
+            margin-bottom:28px;
+        }
+        @media (max-width:960px) { .top-grid { grid-template-columns:1fr; } }
 
-        /* Left column */
-        .detail-main {}
-
-        .offer-hero {
-            background: var(--ag-white);
-            border-radius: var(--ag-radius-lg);
+        /* ── IMAGE PANEL ── */
+        .image-panel {
+            background:var(--ag-white);
+            border-radius:var(--ag-radius-lg);
             overflow:hidden;
             box-shadow:var(--ag-shadow);
-            margin-bottom:24px;
         }
 
-        .offer-hero-img {
-            width:100%; height:380px; object-fit:cover; display:block;
-            background: linear-gradient(135deg, var(--ag-navy), var(--ag-navy-light));
+        .image-main-wrap {
+            position:relative;
+            background: linear-gradient(135deg,var(--ag-navy),var(--ag-navy-light));
+            cursor:zoom-in;
+            overflow:hidden;
+        }
+        .image-main-wrap img {
+            width:100%; max-height:480px; object-fit:contain; display:block;
+            transition: transform 0.4s ease;
+        }
+        .image-main-wrap:hover img { transform:scale(1.02); }
+
+        .img-zoom-hint {
+            position:absolute; bottom:14px; right:14px;
+            background:rgba(0,0,0,0.55); color:#fff;
+            font-size:12px; padding:6px 12px; border-radius:6px;
+            backdrop-filter:blur(4px);
+            display:flex; align-items:center; gap:6px;
+            pointer-events:none;
         }
 
-        .offer-hero-placeholder {
-            width:100%; height:380px;
-            background: linear-gradient(135deg, var(--ag-navy), var(--ag-navy-light));
+        .img-placeholder {
+            width:100%; height:400px;
             display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
-            color:rgba(255,255,255,0.3); font-size:72px;
+            color:rgba(255,255,255,0.25);
+        }
+        .img-placeholder i { font-size:72px; color:rgba(201,151,58,0.4); }
+        .img-placeholder span { font-size:14px; }
+
+        /* extra images strip */
+        .img-strip {
+            display:flex; gap:10px; padding:14px 16px; overflow-x:auto;
+            border-top:1px solid var(--ag-gray-100);
+        }
+        .img-strip-thumb {
+            width:90px; height:66px; object-fit:cover; flex-shrink:0;
+            border-radius:8px; cursor:pointer; opacity:0.65;
+            border:2px solid transparent; transition:var(--ag-transition);
+        }
+        .img-strip-thumb:hover, .img-strip-thumb.active { opacity:1; border-color:var(--ag-gold); }
+
+        /* offer meta block (title + specs) */
+        .offer-meta {
+            background:var(--ag-white);
+            border-radius:var(--ag-radius-lg);
+            padding:28px 32px;
+            box-shadow:var(--ag-shadow);
+            margin-top:0;
         }
 
-        .offer-hero-body { padding:28px 32px; }
-        .offer-title { font-size:24px; color:var(--ag-navy); margin-bottom:6px; }
-        .offer-inv-link { font-size:14px; color:var(--ag-gold); text-decoration:none; display:inline-flex; align-items:center; gap:6px; margin-bottom:20px; }
+        .offer-meta-top {
+            display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:8px;
+        }
+        .offer-title { font-size:26px; color:var(--ag-navy); line-height:1.2; }
+        .offer-inv-link { font-size:14px; color:var(--ag-gold); text-decoration:none; display:inline-flex; align-items:center; gap:6px; margin-bottom:24px; }
         .offer-inv-link:hover { color:var(--ag-gold-light); }
 
-        .offer-specs { display:grid; grid-template-columns:repeat(auto-fill, minmax(130px,1fr)); gap:16px; margin-bottom:24px; }
-        .spec-item { background:var(--ag-gray-50); border:1px solid var(--ag-gray-200); border-radius:var(--ag-radius); padding:16px; text-align:center; }
-        .spec-val { font-family:'Montserrat',sans-serif; font-weight:700; font-size:20px; color:var(--ag-navy); }
-        .spec-lbl { font-size:12px; color:var(--ag-gray-600); text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
-
-        .status-badge { display:inline-block; padding:6px 16px; border-radius:100px; font-size:12px; font-weight:700; }
+        .status-badge { display:inline-block; padding:6px 16px; border-radius:100px; font-size:12px; font-weight:700; white-space:nowrap; }
         .badge-dostepne { background:#D1FAE5; color:#065F46; }
         .badge-sprzedane { background:#FEE2E2; color:#991B1B; }
         .badge-rezerwacja { background:#FEF3C7; color:#92400E; }
         .badge-w-budowie { background:#DBEAFE; color:#1E40AF; }
 
-        .section-card { background:var(--ag-white); border-radius:var(--ag-radius-lg); padding:28px 32px; box-shadow:var(--ag-shadow); margin-bottom:24px; }
-        .section-card-title { font-size:15px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--ag-gold); margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+        .specs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:12px; }
+        .spec-item { background:var(--ag-gray-50); border:1px solid var(--ag-gray-200); border-radius:var(--ag-radius); padding:16px 12px; text-align:center; }
+        .spec-val { font-family:'Montserrat',sans-serif; font-weight:700; font-size:20px; color:var(--ag-navy); line-height:1.2; }
+        .spec-lbl { font-size:11px; color:var(--ag-gray-600); text-transform:uppercase; letter-spacing:0.5px; margin-top:5px; }
 
-        .rzut-img { width:100%; max-height:400px; object-fit:contain; border-radius:var(--ag-radius); background:var(--ag-gray-50); display:block; }
+        /* ── SIDEBAR ── */
+        .sidebar { display:flex; flex-direction:column; gap:20px; }
+
+        .price-card {
+            background:var(--ag-navy); border-radius:var(--ag-radius-lg);
+            padding:28px; box-shadow:var(--ag-shadow-lg); color:#fff;
+        }
+        .price-label { font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:6px; }
+        .price-main { font-family:'Montserrat',sans-serif; font-size:2rem; font-weight:800; color:var(--ag-gold); line-height:1; margin-bottom:4px; }
+        .price-m2-txt { font-size:14px; color:rgba(255,255,255,0.45); margin-bottom:24px; }
+        .btn-call { display:block; background:var(--ag-gold); color:var(--ag-navy); text-align:center; padding:14px; border-radius:10px; font-weight:700; font-size:15px; text-decoration:none; transition:var(--ag-transition); margin-bottom:10px; }
+        .btn-call:hover { background:var(--ag-gold-light); color:var(--ag-navy); text-decoration:none; }
+        .btn-mail { display:block; background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.25); text-align:center; padding:13px; border-radius:10px; font-weight:600; font-size:14px; text-decoration:none; transition:var(--ag-transition); }
+        .btn-mail:hover { border-color:var(--ag-gold); color:var(--ag-gold); text-decoration:none; }
+
+        .info-card { background:var(--ag-white); border-radius:var(--ag-radius-lg); padding:22px 24px; box-shadow:var(--ag-shadow); }
+        .info-card-title { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--ag-gray-600); margin-bottom:16px; }
+        .info-row { display:flex; align-items:flex-start; gap:10px; font-size:14px; padding:9px 0; border-bottom:1px solid var(--ag-gray-100); }
+        .info-row:last-child { border-bottom:none; padding-bottom:0; }
+        .info-row i { color:var(--ag-gold); width:18px; flex-shrink:0; margin-top:1px; font-size:15px; }
+        .info-row span { color:var(--ag-gray-800); line-height:1.4; }
+
+        .chart-card { background:var(--ag-white); border-radius:var(--ag-radius-lg); padding:22px 24px; box-shadow:var(--ag-shadow); }
+        .chart-card-title { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--ag-gray-600); margin-bottom:20px; }
+
+        /* ── FULL-WIDTH SECTIONS ── */
+        .full-section { background:var(--ag-white); border-radius:var(--ag-radius-lg); padding:32px 40px; box-shadow:var(--ag-shadow); margin-bottom:24px; }
+        .full-section-title { font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--ag-gold); margin-bottom:24px; display:flex; align-items:center; gap:10px; }
+        .full-section-title::after { content:''; flex:1; height:1px; background:var(--ag-gray-200); }
+
+        .standard-text { font-size:15px; line-height:1.85; color:var(--ag-gray-800); white-space:pre-line; max-width:none; }
 
         .rooms-table { width:100%; border-collapse:collapse; font-size:14px; }
-        .rooms-table th { text-align:left; padding:10px 12px; font-size:12px; color:var(--ag-gray-600); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--ag-gray-200); }
-        .rooms-table td { padding:12px; border-bottom:1px solid var(--ag-gray-100); color:var(--ag-text); }
+        .rooms-table th { text-align:left; padding:10px 16px; font-size:12px; color:var(--ag-gray-600); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--ag-gray-200); background:var(--ag-gray-50); }
+        .rooms-table td { padding:13px 16px; border-bottom:1px solid var(--ag-gray-100); }
         .rooms-table tr:last-child td { border-bottom:none; }
+        .rooms-table tr:hover td { background:var(--ag-gray-50); }
 
-        .standard-text { font-size:15px; line-height:1.75; color:var(--ag-gray-800); white-space:pre-line; }
+        /* ── LIGHTBOX ── */
+        .lightbox {
+            display:none; position:fixed; inset:0; z-index:1000;
+            background:rgba(0,0,0,0.92); backdrop-filter:blur(6px);
+            align-items:center; justify-content:center; padding:20px;
+        }
+        .lightbox.active { display:flex; }
+        .lightbox-inner { position:relative; max-width:95vw; max-height:92vh; display:flex; align-items:center; }
+        .lightbox-inner img { max-width:100%; max-height:88vh; object-fit:contain; border-radius:8px; display:block; }
+        .lightbox-close {
+            position:fixed; top:20px; right:24px;
+            background:rgba(255,255,255,0.1); border:none; color:#fff;
+            width:44px; height:44px; border-radius:50%; font-size:20px;
+            cursor:pointer; display:flex; align-items:center; justify-content:center;
+            transition:var(--ag-transition);
+        }
+        .lightbox-close:hover { background:var(--ag-gold); color:var(--ag-navy); }
+        .lightbox-nav {
+            position:fixed; top:50%; transform:translateY(-50%);
+            background:rgba(255,255,255,0.1); border:none; color:#fff;
+            width:48px; height:48px; border-radius:50%; font-size:22px;
+            cursor:pointer; display:flex; align-items:center; justify-content:center;
+            transition:var(--ag-transition);
+        }
+        .lightbox-nav:hover { background:var(--ag-gold); color:var(--ag-navy); }
+        .lightbox-prev { left:20px; }
+        .lightbox-next { right:20px; }
+        .lightbox-counter { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.5); font-size:13px; }
 
-        /* Right column (sidebar) */
-        .sidebar {}
-
-        .price-card { background:var(--ag-navy); border-radius:var(--ag-radius-lg); padding:28px; box-shadow:var(--ag-shadow-lg); margin-bottom:20px; color:#fff; }
-        .price-label { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:8px; }
-        .price-main { font-family:'Montserrat',sans-serif; font-size:2rem; font-weight:800; color:var(--ag-gold); line-height:1; margin-bottom:6px; }
-        .price-m2 { font-size:14px; color:rgba(255,255,255,0.5); margin-bottom:24px; }
-        .btn-contact { display:block; background:var(--ag-gold); color:var(--ag-navy); text-align:center; padding:14px; border-radius:10px; font-weight:700; font-size:15px; text-decoration:none; transition:var(--ag-transition); margin-bottom:12px; }
-        .btn-contact:hover { background:var(--ag-gold-light); text-decoration:none; color:var(--ag-navy); }
-        .btn-contact-outline { display:block; background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.3); text-align:center; padding:13px; border-radius:10px; font-weight:600; font-size:14px; text-decoration:none; transition:var(--ag-transition); }
-        .btn-contact-outline:hover { border-color:var(--ag-gold); color:var(--ag-gold); text-decoration:none; }
-
-        .inv-info-card { background:var(--ag-white); border-radius:var(--ag-radius-lg); padding:24px; box-shadow:var(--ag-shadow); margin-bottom:20px; }
-        .inv-info-card h3 { font-size:14px; color:var(--ag-gray-600); text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
-        .inv-info-item { display:flex; align-items:flex-start; gap:10px; font-size:14px; margin-bottom:12px; }
-        .inv-info-item:last-child { margin-bottom:0; }
-        .inv-info-item i { color:var(--ag-gold); width:18px; flex-shrink:0; margin-top:1px; }
-
-        .price-history-card { background:var(--ag-white); border-radius:var(--ag-radius-lg); padding:24px 28px; box-shadow:var(--ag-shadow); margin-bottom:20px; }
-        .price-history-card h3 { font-size:14px; color:var(--ag-gray-600); text-transform:uppercase; letter-spacing:1px; margin-bottom:20px; }
+        @media (max-width:768px) {
+            .full-section { padding:24px 20px; }
+            .offer-meta { padding:20px; }
+        }
     </style>
 </head>
 <body>
 
+<!-- NAVBAR -->
 <nav class="navbar">
     <a href="/" class="navbar-brand">
         <div class="brand-logo">AG</div>
@@ -136,235 +223,325 @@
     <!-- Breadcrumb -->
     <div class="breadcrumb">
         <a href="/">Strona główna</a>
-        <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+        <i class="bi bi-chevron-right"></i>
         <a href="/oferty/">Oferty</a>
-        <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+        <i class="bi bi-chevron-right"></i>
         <a href="/inwestycje/{{ oferta.inwestycja.pk }}/">{{ oferta.inwestycja.nazwa }}</a>
-        <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
-        <span style="color:var(--ag-text);">{{ oferta.numer_lokalu|default:oferta.adres }}</span>
+        <i class="bi bi-chevron-right"></i>
+        <span style="color:var(--ag-text);font-weight:600;">{{ oferta.numer_lokalu|default:oferta.adres }}</span>
     </div>
 
-    <div class="detail-grid">
+    <!-- TOP GRID -->
+    <div class="top-grid">
 
-        <!-- LEFT: main content -->
-        <div class="detail-main">
+        <!-- LEFT: image + meta -->
+        <div style="display:flex;flex-direction:column;gap:20px;">
 
-            <!-- Hero image / floor plan -->
-            <div class="offer-hero">
+            <!-- Image panel -->
+            <div class="image-panel">
                 {% if oferta.rzut %}
-                <img src="{{ oferta.rzut.url }}" class="offer-hero-img" alt="Rzut lokalu">
+                <div class="image-main-wrap" onclick="openLightbox(0)" id="mainImgWrap">
+                    <img src="{{ oferta.rzut.url }}" alt="Rzut lokalu" id="mainImg">
+                    <div class="img-zoom-hint"><i class="bi bi-zoom-in"></i> Powiększ</div>
+                </div>
                 {% elif oferta.zdjecie %}
-                <img src="{{ oferta.zdjecie.url }}" class="offer-hero-img" alt="{{ oferta.adres }}">
+                <div class="image-main-wrap" onclick="openLightbox(0)" id="mainImgWrap">
+                    <img src="{{ oferta.zdjecie.url }}" alt="{{ oferta.adres }}" id="mainImg">
+                    <div class="img-zoom-hint"><i class="bi bi-zoom-in"></i> Powiększ</div>
+                </div>
                 {% else %}
-                <div class="offer-hero-placeholder">
+                <div class="img-placeholder">
                     <i class="bi bi-layout-text-window"></i>
-                    <span style="font-size:15px;">Brak rzutu</span>
+                    <span>Brak rzutu lokalu</span>
                 </div>
                 {% endif %}
 
-                <div class="offer-hero-body">
-                    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
-                        <h1 class="offer-title">
-                            Lokal {{ oferta.numer_lokalu|default:oferta.adres }}
-                        </h1>
-                        {% with oferta.status as st %}
-                        <span class="status-badge {% if st == 'dostepne' %}badge-dostepne{% elif st == 'sprzedane' %}badge-sprzedane{% elif st == 'rezerwacja' %}badge-rezerwacja{% else %}badge-w-budowie{% endif %}">
-                            {{ oferta.get_status_display }}
-                        </span>
-                        {% endwith %}
-                    </div>
-                    <a href="/inwestycje/{{ oferta.inwestycja.pk }}/" class="offer-inv-link">
-                        <i class="bi bi-buildings"></i> {{ oferta.inwestycja.nazwa }}
-                    </a>
+                <!-- Gallery strip from investment photos -->
+                {% with photos=oferta.inwestycja.zdjecia.all %}
+                {% if photos %}
+                <div class="img-strip" id="imgStrip">
+                    {% if oferta.rzut %}
+                    <img src="{{ oferta.rzut.url }}" class="img-strip-thumb active" onclick="switchMainImg('{{ oferta.rzut.url }}', this, 0)" alt="Rzut">
+                    {% elif oferta.zdjecie %}
+                    <img src="{{ oferta.zdjecie.url }}" class="img-strip-thumb active" onclick="switchMainImg('{{ oferta.zdjecie.url }}', this, 0)" alt="Zdjęcie">
+                    {% endif %}
+                    {% for z in photos %}
+                    <img src="{{ z.obraz.url }}" class="img-strip-thumb" onclick="switchMainImg('{{ z.obraz.url }}', this, {{ forloop.counter }})" alt="Zdjęcie {{ forloop.counter }}">
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+            </div>
 
-                    <div class="offer-specs">
-                        {% if oferta.metraz %}
-                        <div class="spec-item">
-                            <div class="spec-val">{{ oferta.metraz }} m²</div>
-                            <div class="spec-lbl">Metraż</div>
-                        </div>
-                        {% endif %}
-                        <div class="spec-item">
-                            <div class="spec-val">{{ oferta.pokoje }}</div>
-                            <div class="spec-lbl">Pokoje</div>
-                        </div>
-                        {% if oferta.pietro is not None %}
-                        <div class="spec-item">
-                            <div class="spec-val">{{ oferta.pietro }}</div>
-                            <div class="spec-lbl">Piętro</div>
-                        </div>
-                        {% endif %}
-                        {% if oferta.rodzaj_lokalu %}
-                        <div class="spec-item">
-                            <div class="spec-val" style="font-size:15px;">{{ oferta.rodzaj_lokalu }}</div>
-                            <div class="spec-lbl">Rodzaj</div>
-                        </div>
-                        {% endif %}
+            <!-- Title + specs -->
+            <div class="offer-meta">
+                <div class="offer-meta-top">
+                    <h1 class="offer-title">Lokal {{ oferta.numer_lokalu|default:oferta.adres }}</h1>
+                    {% with oferta.status as st %}
+                    <span class="status-badge {% if st == 'dostepne' %}badge-dostepne{% elif st == 'sprzedane' %}badge-sprzedane{% elif st == 'rezerwacja' %}badge-rezerwacja{% else %}badge-w-budowie{% endif %}">
+                        {{ oferta.get_status_display }}
+                    </span>
+                    {% endwith %}
+                </div>
+                <a href="/inwestycje/{{ oferta.inwestycja.pk }}/" class="offer-inv-link">
+                    <i class="bi bi-buildings"></i> {{ oferta.inwestycja.nazwa }}
+                </a>
+                <div class="specs-grid">
+                    {% if oferta.metraz %}
+                    <div class="spec-item">
+                        <div class="spec-val">{{ oferta.metraz }}</div>
+                        <div class="spec-lbl">m²</div>
                     </div>
+                    {% endif %}
+                    <div class="spec-item">
+                        <div class="spec-val">{{ oferta.pokoje }}</div>
+                        <div class="spec-lbl">Pokoje</div>
+                    </div>
+                    {% if oferta.pietro is not None %}
+                    <div class="spec-item">
+                        <div class="spec-val">{{ oferta.pietro }}</div>
+                        <div class="spec-lbl">Piętro</div>
+                    </div>
+                    {% endif %}
+                    {% if oferta.rodzaj_lokalu %}
+                    <div class="spec-item">
+                        <div class="spec-val" style="font-size:14px;line-height:1.3;">{{ oferta.rodzaj_lokalu }}</div>
+                        <div class="spec-lbl">Rodzaj</div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
-
-            <!-- Pomieszczenia przynależne -->
-            {% if oferta.pomieszczenia.all %}
-            <div class="section-card">
-                <div class="section-card-title"><i class="bi bi-door-open"></i> Pomieszczenia przynależne</div>
-                <table class="rooms-table">
-                    <thead>
-                        <tr>
-                            <th>Pomieszczenie</th>
-                            <th>Powierzchnia</th>
-                            <th>Cena</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for p in oferta.pomieszczenia.all %}
-                        <tr>
-                            <td>{{ p.nazwa }}</td>
-                            <td>{% if p.powierzchnia %}{{ p.powierzchnia }} m²{% else %}—{% endif %}</td>
-                            <td>{% if p.cena %}{{ p.cena|floatformat:0 }} PLN{% else %}—{% endif %}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-
-            <!-- Standard wykończenia -->
-            {% if oferta.inwestycja.standard %}
-            <div class="section-card">
-                <div class="section-card-title"><i class="bi bi-gem"></i> Standard wykończenia</div>
-                <p class="standard-text">{{ oferta.inwestycja.standard }}</p>
-            </div>
-            {% endif %}
-
-            <!-- Świadczenia pieniężne -->
-            {% if oferta.swiadczenia.all %}
-            <div class="section-card">
-                <div class="section-card-title"><i class="bi bi-receipt"></i> Świadczenia pieniężne</div>
-                <table class="rooms-table">
-                    <thead><tr><th>Nazwa</th><th>Kwota</th><th>Opis</th></tr></thead>
-                    <tbody>
-                        {% for s in oferta.swiadczenia.all %}
-                        <tr>
-                            <td>{{ s.nazwa }}</td>
-                            <td>{{ s.kwota|floatformat:0 }} PLN</td>
-                            <td>{{ s.opis|default:"—" }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-
-            <!-- Rabaty -->
-            {% if oferta.rabaty.all %}
-            <div class="section-card">
-                <div class="section-card-title"><i class="bi bi-tag"></i> Rabaty</div>
-                <table class="rooms-table">
-                    <thead><tr><th>Nazwa</th><th>Wartość</th><th>Obowiązuje</th></tr></thead>
-                    <tbody>
-                        {% for r in oferta.rabaty.all %}
-                        <tr>
-                            <td>{{ r.nazwa }}</td>
-                            <td>{% if r.typ == 'procentowy' %}{{ r.wartosc }}%{% else %}{{ r.wartosc|floatformat:0 }} PLN{% endif %}</td>
-                            <td>{{ r.data_od|date:"d.m.Y" }} – {{ r.data_do|date:"d.m.Y" }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-
         </div>
 
         <!-- RIGHT: sidebar -->
         <div class="sidebar">
 
-            <!-- Price card -->
+            <!-- Price -->
             <div class="price-card">
                 <div class="price-label">Cena</div>
                 {% if oferta.cena_aktualna %}
                 <div class="price-main">{{ oferta.cena_aktualna|floatformat:0 }} PLN</div>
                 {% if oferta.cena_m2_calc %}
-                <div class="price-m2">{{ oferta.cena_m2_calc|floatformat:0 }} PLN/m²</div>
+                <div class="price-m2-txt">{{ oferta.cena_m2_calc|floatformat:0 }} PLN/m²</div>
+                {% else %}
+                <div class="price-m2-txt">&nbsp;</div>
                 {% endif %}
                 {% else %}
-                <div class="price-main" style="font-size:1.3rem;">Do negocjacji</div>
-                <div class="price-m2">&nbsp;</div>
+                <div class="price-main" style="font-size:1.4rem;">Do negocjacji</div>
+                <div class="price-m2-txt">&nbsp;</div>
                 {% endif %}
-                <a href="tel:+48000000000" class="btn-contact">
+                <a href="tel:+48508396695" class="btn-call">
                     <i class="bi bi-telephone-fill"></i>&nbsp; Zadzwoń teraz
                 </a>
-                <a href="mailto:biuro@agconstruction.pl" class="btn-contact-outline">
+                <a href="mailto:biuro@agconstruction.pl" class="btn-mail">
                     <i class="bi bi-envelope"></i>&nbsp; Wyślij zapytanie
                 </a>
             </div>
 
             <!-- Investment info -->
-            <div class="inv-info-card">
-                <h3>Inwestycja</h3>
-                <div class="inv-info-item">
+            <div class="info-card">
+                <div class="info-card-title">Inwestycja</div>
+                <div class="info-row">
                     <i class="bi bi-buildings"></i>
                     <span>{{ oferta.inwestycja.nazwa }}</span>
                 </div>
-                <div class="inv-info-item">
+                <div class="info-row">
                     <i class="bi bi-geo-alt"></i>
                     <span>{{ oferta.inwestycja.adres }}</span>
                 </div>
                 {% if oferta.inwestycja.termin_zakonczenia %}
-                <div class="inv-info-item">
+                <div class="info-row">
                     <i class="bi bi-calendar3"></i>
-                    <span>Termin: {{ oferta.inwestycja.termin_zakonczenia|date:"m.Y" }}</span>
+                    <span>Termin oddania: {{ oferta.inwestycja.termin_zakonczenia|date:"m.Y" }}</span>
                 </div>
                 {% endif %}
                 {% if oferta.numer_oferty %}
-                <div class="inv-info-item">
+                <div class="info-row">
                     <i class="bi bi-hash"></i>
                     <span>Nr oferty: {{ oferta.numer_oferty }}</span>
                 </div>
                 {% endif %}
             </div>
 
-            <!-- Price history chart -->
+            <!-- Price history -->
             {% if historia_cen|length > 1 %}
-            <div class="price-history-card">
-                <h3>Historia cen</h3>
+            <div class="chart-card">
+                <div class="chart-card-title">Historia cen</div>
                 <canvas id="priceChart" height="180"></canvas>
             </div>
-            <script>
-            (function() {
-                const labels = [{% for c in historia_cen %}"{{ c.data|date:"d.m.Y" }}"{% if not forloop.last %},{% endif %}{% endfor %}];
-                const data = [{% for c in historia_cen %}{{ c.kwota }}{% if not forloop.last %},{% endif %}{% endfor %}];
-                new Chart(document.getElementById('priceChart'), {
-                    type: 'line',
-                    data: {
-                        labels,
-                        datasets: [{
-                            data,
-                            borderColor: '#C9973A',
-                            backgroundColor: 'rgba(201,151,58,0.08)',
-                            borderWidth: 2,
-                            pointBackgroundColor: '#C9973A',
-                            fill: true,
-                            tension: 0.3
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            y: { ticks: { callback: v => v.toLocaleString('pl-PL') + ' PLN', font: { size: 11 } }, grid: { color: '#F1F3F5' } },
-                            x: { ticks: { font: { size: 11 } }, grid: { display: false } }
-                        }
-                    }
-                });
-            })();
-            </script>
             {% endif %}
 
         </div>
     </div>
+
+    <!-- FULL-WIDTH SECTIONS -->
+
+    {% if oferta.pomieszczenia.all %}
+    <div class="full-section">
+        <div class="full-section-title"><i class="bi bi-door-open"></i> Pomieszczenia przynależne</div>
+        <table class="rooms-table">
+            <thead>
+                <tr>
+                    <th>Pomieszczenie</th>
+                    <th>Powierzchnia</th>
+                    <th>Cena</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in oferta.pomieszczenia.all %}
+                <tr>
+                    <td>{{ p.nazwa }}</td>
+                    <td>{% if p.powierzchnia %}{{ p.powierzchnia }} m²{% else %}—{% endif %}</td>
+                    <td>{% if p.cena %}{{ p.cena|floatformat:0 }} PLN{% else %}—{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    {% if oferta.inwestycja.standard %}
+    <div class="full-section">
+        <div class="full-section-title"><i class="bi bi-gem"></i> Standard wykończenia</div>
+        <p class="standard-text">{{ oferta.inwestycja.standard }}</p>
+    </div>
+    {% endif %}
+
+    {% if oferta.swiadczenia.all %}
+    <div class="full-section">
+        <div class="full-section-title"><i class="bi bi-receipt"></i> Świadczenia pieniężne</div>
+        <table class="rooms-table">
+            <thead><tr><th>Nazwa</th><th>Kwota</th><th>Opis</th></tr></thead>
+            <tbody>
+                {% for s in oferta.swiadczenia.all %}
+                <tr>
+                    <td>{{ s.nazwa }}</td>
+                    <td>{{ s.kwota|floatformat:0 }} PLN</td>
+                    <td>{{ s.opis|default:"—" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    {% if oferta.rabaty.all %}
+    <div class="full-section">
+        <div class="full-section-title"><i class="bi bi-tag"></i> Rabaty</div>
+        <table class="rooms-table">
+            <thead><tr><th>Nazwa</th><th>Wartość</th><th>Obowiązuje</th></tr></thead>
+            <tbody>
+                {% for r in oferta.rabaty.all %}
+                <tr>
+                    <td>{{ r.nazwa }}</td>
+                    <td>{% if r.typ == 'procentowy' %}{{ r.wartosc }}%{% else %}{{ r.wartosc|floatformat:0 }} PLN{% endif %}</td>
+                    <td>{{ r.data_od|date:"d.m.Y" }} – {{ r.data_do|date:"d.m.Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
 </div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()"><i class="bi bi-x"></i></button>
+    <button class="lightbox-nav lightbox-prev" id="lbPrev" onclick="lbNav(-1)"><i class="bi bi-chevron-left"></i></button>
+    <div class="lightbox-inner">
+        <img id="lbImg" src="" alt="">
+    </div>
+    <button class="lightbox-nav lightbox-next" id="lbNext" onclick="lbNav(1)"><i class="bi bi-chevron-right"></i></button>
+    <div class="lightbox-counter" id="lbCounter"></div>
+</div>
+
+<script>
+// Build image list for lightbox
+const allImages = [];
+{% if oferta.rzut %}
+allImages.push("{{ oferta.rzut.url }}");
+{% elif oferta.zdjecie %}
+allImages.push("{{ oferta.zdjecie.url }}");
+{% endif %}
+{% for z in oferta.inwestycja.zdjecia.all %}
+allImages.push("{{ z.obraz.url }}");
+{% endfor %}
+
+let lbCurrent = 0;
+
+function openLightbox(idx) {
+    if (!allImages.length) return;
+    lbCurrent = idx || 0;
+    lbShow();
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function lbNav(dir) {
+    lbCurrent = (lbCurrent + dir + allImages.length) % allImages.length;
+    lbShow();
+}
+
+function lbShow() {
+    document.getElementById('lbImg').src = allImages[lbCurrent];
+    document.getElementById('lbCounter').textContent = (lbCurrent + 1) + ' / ' + allImages.length;
+    document.getElementById('lbPrev').style.display = allImages.length > 1 ? 'flex' : 'none';
+    document.getElementById('lbNext').style.display = allImages.length > 1 ? 'flex' : 'none';
+}
+
+function switchMainImg(url, el, lbIdx) {
+    const mainImg = document.getElementById('mainImg');
+    if (mainImg) mainImg.src = url;
+    document.querySelectorAll('.img-strip-thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    // Update lightbox index to match
+    lbCurrent = lbIdx < allImages.length ? lbIdx : 0;
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') lbNav(1);
+    if (e.key === 'ArrowLeft') lbNav(-1);
+});
+
+{% if historia_cen|length > 1 %}
+(function() {
+    const labels = [{% for c in historia_cen %}"{{ c.data|date:"d.m.Y" }}"{% if not forloop.last %},{% endif %}{% endfor %}];
+    const data = [{% for c in historia_cen %}{{ c.kwota }}{% if not forloop.last %},{% endif %}{% endfor %}];
+    new Chart(document.getElementById('priceChart'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                data,
+                borderColor: '#C9973A',
+                backgroundColor: 'rgba(201,151,58,0.08)',
+                borderWidth: 2,
+                pointBackgroundColor: '#C9973A',
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { ticks: { callback: v => parseInt(v).toLocaleString('pl-PL') + ' PLN', font: { size: 11 } }, grid: { color: '#F1F3F5' } },
+                x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+            }
+        }
+    });
+})();
+{% endif %}
+</script>
 
 </body>
 </html>
