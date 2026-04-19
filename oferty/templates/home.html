@@ -1278,7 +1278,7 @@
                 mieć
             </h1>
             <p class="hero-desc">
-                Starannie dobrane lokalizacje, solidne wykonanie i wysoki standard — tworzymy domy, w których naprawdę chce się mieszkać.
+                Starannie dobrane lokalizacje, solidne wykonanie i wysoki standard - tworzymy domy, w których naprawdę chce się mieszkać.
             </p>
             <div class="hero-actions">
                 <a href="#inwestycje" class="btn-primary-ag">
@@ -1292,7 +1292,7 @@
             </div>
             <div class="hero-stats">
                 <div class="stat-item">
-                    <div class="stat-number">{% if inwestycje %}{{ inwestycje|length }}{% else %}—{% endif %}</div>
+                    <div class="stat-number">{% if inwestycje %}{{ inwestycje|length }}{% else %}-{% endif %}</div>
                     <div class="stat-label">Inwestycji</div>
                 </div>
                 <div class="stat-item">
@@ -1344,18 +1344,18 @@
         <div class="section-header">
             <span class="section-label">Dlaczego AG Construction</span>
             <h2 class="section-title">Dom, na który zasługujesz</h2>
-            <p class="section-desc">Budujemy miejsca, do których chce się wracać — z myślą o komforcie, trwałości i każdym detalu.</p>
+            <p class="section-desc">Budujemy miejsca, do których chce się wracać - z myślą o komforcie, trwałości i każdym detalu.</p>
         </div>
         <div class="features-grid">
             <div class="feature-card reveal">
                 <div class="feature-icon"><i class="bi bi-geo-alt"></i></div>
                 <h3 class="feature-title">Lokalizacje z głową</h3>
-                <p class="feature-desc">Wybieramy miejsca z dostępem do zieleni, dobrej komunikacji i codziennej infrastruktury — bo lokalizacja to połowa sukcesu.</p>
+                <p class="feature-desc">Wybieramy miejsca z dostępem do zieleni, dobrej komunikacji i codziennej infrastruktury - bo lokalizacja to połowa sukcesu.</p>
             </div>
             <div class="feature-card reveal">
                 <div class="feature-icon"><i class="bi bi-gem"></i></div>
                 <h3 class="feature-title">Solidne wykonanie</h3>
-                <p class="feature-desc">Ceramika, styropian 15 cm, żelbetowe stropy — budujemy z materiałów, które służą przez dekady, nie tylko na papierze.</p>
+                <p class="feature-desc">Ceramika, styropian 15 cm, żelbetowe stropy - budujemy z materiałów, które służą przez dekady, nie tylko na papierze.</p>
             </div>
             <div class="feature-card reveal">
                 <div class="feature-icon"><i class="bi bi-layout-text-window-reverse"></i></div>
@@ -1365,7 +1365,7 @@
             <div class="feature-card reveal">
                 <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
                 <h3 class="feature-title">Pewna transakcja</h3>
-                <p class="feature-desc">Rachunek powierniczy, umowy zgodne z ustawą deweloperską i pełna transparentność — Twoje pieniądze są bezpieczne.</p>
+                <p class="feature-desc">Rachunek powierniczy, umowy zgodne z ustawą deweloperską i pełna transparentność - Twoje pieniądze są bezpieczne.</p>
             </div>
         </div>
     </div>
@@ -1425,7 +1425,7 @@
                         </div>
                         <div class="inv-stat">
                             <div class="inv-stat-val">
-                                {% if inv.termin_zakonczenia %}{{ inv.termin_zakonczenia.year }}{% else %}—{% endif %}
+                                {% if inv.termin_zakonczenia %}{{ inv.termin_zakonczenia.year }}{% else %}-{% endif %}
                             </div>
                             <div class="inv-stat-lbl">Rok oddania</div>
                         </div>
@@ -1467,7 +1467,7 @@
         <div class="cta-contact-grid">
             <a href="tel:+48000000000" class="cta-contact-item">
                 <i class="bi bi-telephone-fill"></i>
-                <span>+48 000 000 000</span>
+                <span>+48 508 396 695</span>
             </a>
             <a href="mailto:biuro@agconstruction.pl" class="cta-contact-item">
                 <i class="bi bi-envelope-fill"></i>
@@ -1494,10 +1494,10 @@
                 <span class="section-label">O nas</span>
                 <h2 class="section-title">AG Construction – budownictwo z charakterem</h2>
                 <p style="color:var(--ag-gray-600);font-size:16px;line-height:1.75;margin-bottom:28px;">
-                    Tworzymy osiedla, w których chce się żyć — nie tylko mieszkać. Każda inwestycja to wynik przemyślanego projektu, dobrej lokalizacji i materiałów, które faktycznie coś znaczą.
+                    Tworzymy osiedla, w których chce się żyć - nie tylko mieszkać. Każda inwestycja to wynik przemyślanego projektu, dobrej lokalizacji i materiałów, które faktycznie coś znaczą.
                 </p>
                 <p style="color:var(--ag-gray-600);font-size:16px;line-height:1.75;margin-bottom:32px;">
-                    Stawiamy na kontakt bez pośredników, jasne warunki i pełne wsparcie — od pierwszego pytania aż po odbiór kluczy. Bo zakup mieszkania powinien być przyjemnością, nie stresem.
+                    Stawiamy na kontakt bez pośredników, jasne warunki i pełne wsparcie - od pierwszego pytania aż po odbiór kluczy. Bo zakup mieszkania powinien być przyjemnością, nie stresem.
                 </p>
                 <div class="about-values">
                     <div class="value-item">
@@ -1715,7 +1715,7 @@ function showPopup(id) {
         html += `<h4 style="font-size:16px;color:var(--ag-navy);margin-bottom:16px;">Lokale (${inv.offers.length})</h4>`;
         inv.offers.forEach(o => {
             const s = statusMap[o.status] || { label: o.status, cls: '' };
-            const cena = o.cena ? parseInt(o.cena).toLocaleString('pl-PL') + ' PLN' : '—';
+            const cena = o.cena ? parseInt(o.cena).toLocaleString('pl-PL') + ' PLN' : '-';
             const m2 = o.cena_m2 ? parseInt(o.cena_m2).toLocaleString('pl-PL') + ' PLN/m²' : '';
             html += `<a href="/oferta/${o.id}/" class="offer-link">
             <div class="offer-row">

@@ -124,3 +124,5 @@ COMPANY_REGON = '000000000'
 COMPANY_ADDRESS = 'ul. Budowlana 1, 00-000 Warszawa'
 COMPANY_PHONE = '+48 000 000 000'
 COMPANY_EMAIL = 'biuro@agconstruction.pl'
+
+SITE_DOMAIN = config('SITE_DOMAIN', default='localhost')
