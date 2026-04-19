@@ -157,8 +157,8 @@
             position: absolute;
             inset: 0;
             background:
-                linear-gradient(135deg, rgba(13,27,42,0.97) 0%, rgba(28,47,74,0.90) 50%, rgba(13,27,42,0.85) 100%),
-                url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=80') center/cover no-repeat;
+                linear-gradient(135deg, rgba(13,27,42,0.82) 0%, rgba(13,27,42,0.65) 50%, rgba(13,27,42,0.75) 100%),
+                var(--hero-image, linear-gradient(135deg, #0D1B2A, #1C2F4A)) center/cover no-repeat;
         }
 
         .hero-accent {
@@ -1171,7 +1171,7 @@
 
 <!-- HERO -->
 <section class="hero">
-    <div class="hero-bg"></div>
+    <div class="hero-bg"{% if hero_photo %} style="--hero-image: url('{{ hero_photo }}')"{% endif %}></div>
     <div class="hero-accent"></div>
     <div class="hero-grid-lines"></div>
     <div class="hero-content">

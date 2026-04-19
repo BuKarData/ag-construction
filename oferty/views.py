@@ -34,7 +34,13 @@ def home(request):
             cena = safe_float(oferta.cena_aktualna)
             oferta.cena_m2_calc = round(cena / metraz, 0) if cena and metraz else None
 
-    return render(request, 'home.html', {'inwestycje': inwestycje})
+    hero_photo = None
+    for inv in inwestycje:
+        if inv.zdjecie:
+            hero_photo = inv.zdjecie.url
+            break
+
+    return render(request, 'home.html', {'inwestycje': inwestycje, 'hero_photo': hero_photo})
 
 
 def lista_ofert(request):
