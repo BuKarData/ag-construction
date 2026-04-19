@@ -695,7 +695,6 @@
                     <th>Adres / Lokal</th>
                     <th>Metraż</th>
                     <th>Pokoje</th>
-                    <th>Piętro</th>
                     <th>Status</th>
                     <th>Cena</th>
                     <th>Cena/m²</th>
@@ -713,7 +712,6 @@
                     </td>
                     <td>{% if o.metraz %}{{ o.metraz }} m²{% else %}—{% endif %}</td>
                     <td>{{ o.pokoje }}</td>
-                    <td>{% if o.pietro is not None %}{{ o.pietro }}{% else %}—{% endif %}</td>
                     <td>
                         <span class="table-status status-{{ o.status }}">{{ o.status|status_label }}</span>
                     </td>
