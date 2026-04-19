@@ -1,7 +1,7 @@
 import json
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -94,6 +94,7 @@ def szczegoly_inwestycji(request, pk):
     return render(request, 'oferty/szczegoly_inwestycji.html', {'inwestycja': inwestycja})
 
 
+@login_required
 def dodaj_oferte(request):
     if request.method == 'POST':
         form = OfertaForm(request.POST)
@@ -105,6 +106,7 @@ def dodaj_oferte(request):
     return render(request, 'oferty/dodaj_oferte.html', {'form': form})
 
 
+@login_required
 def dodaj_cene(request, oferta_id):
     oferta = get_object_or_404(Oferta, pk=oferta_id)
     if request.method == 'POST':
@@ -117,15 +119,20 @@ def dodaj_cene(request, oferta_id):
     return render(request, 'oferty/dodaj_cene.html', {'form': form, 'oferta': oferta})
 
 
-@csrf_exempt
+@login_required
 def ajax_dodaj_cene(request, oferta_id):
-    if request.method == 'POST':
-        oferta = get_object_or_404(Oferta, pk=oferta_id)
-        try:
-            kwota = request.POST.get('kwota')
-            data = request.POST.get('data')
-            Cena.objects.create(oferta=oferta, kwota=Decimal(kwota), data=data)
-            return JsonResponse({'success': True})
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)})
-    return JsonResponse({'success': False, 'error': 'Metoda niedozwolona'})
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Metoda niedozwolona'}, status=405)
+    oferta = get_object_or_404(Oferta, pk=oferta_id)
+    kwota_raw = request.POST.get('kwota', '').strip()
+    data_raw = request.POST.get('data', '').strip()
+    if not kwota_raw or not data_raw:
+        return JsonResponse({'success': False, 'error': 'Brakuje kwoty lub daty'}, status=400)
+    try:
+        kwota = Decimal(kwota_raw.replace(',', '.').replace(' ', ''))
+        if kwota <= 0:
+            raise ValueError('Kwota musi być dodatnia')
+    except (InvalidOperation, ValueError) as e:
+        return JsonResponse({'success': False, 'error': f'Nieprawidłowa kwota: {e}'}, status=400)
+    Cena.objects.create(oferta=oferta, kwota=kwota, data=data_raw)
+    return JsonResponse({'success': True})

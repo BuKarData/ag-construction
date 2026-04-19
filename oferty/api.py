@@ -17,11 +17,14 @@ def _md5(data: bytes) -> str:
 
 
 def _open_data_headers(response, etag: str) -> HttpResponse:
+    # Dane publiczne (Open Data) – CORS dozwolony dla harwesterów dane.gov.pl
     response["Access-Control-Allow-Origin"] = "*"
+    response["Access-Control-Allow-Methods"] = "GET, HEAD, OPTIONS"
     response["Cache-Control"] = "public, max-age=3600"
     response["ETag"] = f'"{etag}"'
     response["Last-Modified"] = datetime.utcnow().strftime("%a, %d %b %Y %H:%M:%S GMT")
     response["Link"] = '<https://creativecommons.org/publicdomain/zero/1.0/>; rel="license"'
+    response["X-Content-Type-Options"] = "nosniff"
     return response
 
 
@@ -59,6 +62,7 @@ def _cena_swiadczen(oferta):
 
 def _base_row(oferta) -> dict:
     nip = getattr(settings, "COMPANY_NIP", "")
+    krs = getattr(settings, "COMPANY_KRS", "")
     regon = getattr(settings, "COMPANY_REGON", "")
     nazwa = getattr(settings, "COMPANY_NAME", "AG Construction")
     adres = getattr(settings, "COMPANY_ADDRESS", "")
@@ -70,6 +74,7 @@ def _base_row(oferta) -> dict:
 
     return {
         "nip": nip,
+        "krs": krs,
         "regon": regon,
         "nazwa_firmy": nazwa,
         "adres_firmy": adres,
@@ -122,7 +127,7 @@ def _flat_rows():
     # Build consistent fieldnames
     fixed = list(_base_row.__code__.co_consts)  # unused — build manually
     fixed_fields = [
-        "nip", "regon", "nazwa_firmy", "adres_firmy", "telefon", "email",
+        "nip", "krs", "regon", "nazwa_firmy", "adres_firmy", "telefon", "email",
         "id_przedsiewziecia", "nazwa_przedsiewziecia", "adres_przedsiewziecia",
         "numer_lokalu", "numer_oferty", "rodzaj_lokalu",
         "powierzchnia_uzytkowa_m2", "liczba_pokoi",
@@ -212,6 +217,7 @@ def view_xlsx(request):
 
 def generate_jsonld() -> dict:
     nip = getattr(settings, "COMPANY_NIP", "")
+    krs = getattr(settings, "COMPANY_KRS", "")
     regon = getattr(settings, "COMPANY_REGON", "")
     nazwa = getattr(settings, "COMPANY_NAME", "AG Construction")
     adres = getattr(settings, "COMPANY_ADDRESS", "")
@@ -234,6 +240,7 @@ def generate_jsonld() -> dict:
         "@type": "Organization",
         "name": nazwa,
         "vatID": nip,
+        "leiCode": krs,
         "taxID": regon,
         "address": {
             "@type": "PostalAddress",
@@ -335,6 +342,11 @@ def view_jsonld(request):
 
 def generate_metadata_xml() -> bytes:
     nazwa = getattr(settings, "COMPANY_NAME", "AG Construction")
+    nip = getattr(settings, "COMPANY_NIP", "")
+    krs = getattr(settings, "COMPANY_KRS", "")
+    adres = getattr(settings, "COMPANY_ADDRESS", "")
+    telefon = getattr(settings, "COMPANY_PHONE", "")
+    email = getattr(settings, "COMPANY_EMAIL", "")
     now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
     today = date.today().isoformat()
     domain = getattr(settings, "SITE_DOMAIN", "localhost")
@@ -348,6 +360,14 @@ def generate_metadata_xml() -> bytes:
       <polish>Ceny ofertowe lokali mieszkalnych dewelopera {nazwa}</polish>
       <english>Real estate offer prices by developer {nazwa}</english>
     </title>
+    <publisher>
+      <name>{nazwa}</name>
+      <nip>{nip}</nip>
+      <krs>{krs}</krs>
+      <address>{adres}</address>
+      <phone>{telefon}</phone>
+      <email>{email}</email>
+    </publisher>
     <description>
       <polish>Zbior danych zawierajacy aktualne ceny ofertowe lokali mieszkalnych zgodnie z art. 19a i 19b ustawy o ochronie praw nabywcy lokalu mieszkalnego (Dz. U. 2025 poz. 758).</polish>
       <english>Dataset containing current offer prices of residential units pursuant to the Act on the Protection of the Rights of a Purchaser of a Residential Unit.</english>

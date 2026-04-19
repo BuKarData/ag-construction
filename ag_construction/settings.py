@@ -1,15 +1,24 @@
 import os
+import warnings
 from pathlib import Path
 import dj_database_url
 from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-ag-construction-change-this-in-production-xyz123!')
+_DEFAULT_SECRET = 'django-insecure-ag-construction-change-this-in-production-xyz123!'
+SECRET_KEY = config('SECRET_KEY', default=_DEFAULT_SECRET)
+if SECRET_KEY == _DEFAULT_SECRET:
+    warnings.warn(
+        'SECRET_KEY nie jest ustawiony w zmiennych środowiskowych! '
+        'Ustaw SECRET_KEY w Railway przed wdrożeniem produkcyjnym.',
+        stacklevel=2,
+    )
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
+_allowed = config('ALLOWED_HOSTS', default='')
+ALLOWED_HOSTS = _allowed.split(',') if _allowed else (['localhost', '127.0.0.1'] if DEBUG else ['*'])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -92,7 +101,22 @@ REST_FRAMEWORK = {
 SECURE_SSL_REDIRECT = False
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+# HSTS – włącz po potwierdzeniu że HTTPS działa poprawnie na Railway
+SECURE_HSTS_SECONDS = 0  # ustaw na 31536000 po weryfikacji HTTPS
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Limit wielkości uploadu
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024  # 5 MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024
 
 CSRF_TRUSTED_ORIGINS = config(
     'CSRF_TRUSTED_ORIGINS',
@@ -118,11 +142,12 @@ LOGGING = {
     },
 }
 
-COMPANY_NAME = 'AG Construction'
-COMPANY_NIP = '0000000000'
-COMPANY_REGON = '000000000'
-COMPANY_ADDRESS = 'ul. Budowlana 1, 00-000 Warszawa'
-COMPANY_PHONE = '+48 000 000 000'
+COMPANY_NAME = 'AG Construction Sp. z o.o.'
+COMPANY_NIP = '1251779091'
+COMPANY_KRS = '0001143637'
+COMPANY_REGON = ''
+COMPANY_ADDRESS = 'ul. Ignacego Paderewskiego 15, 05-220 Zielonka'
+COMPANY_PHONE = '+48 508 396 695'
 COMPANY_EMAIL = 'biuro@agconstruction.pl'
 
 SITE_DOMAIN = config('SITE_DOMAIN', default='localhost')

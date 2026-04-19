@@ -1,24 +1,26 @@
-from django.core.management.base import BaseCommand
+import os
+from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth import get_user_model
 
 
 class Command(BaseCommand):
-    help = 'Tworzy domyślnego superużytkownika dla AG Construction'
+    help = 'Tworzy domyślnego superużytkownika dla AG Construction (wymaga DJANGO_ADMIN_PASSWORD)'
 
     def handle(self, *args, **kwargs):
         User = get_user_model()
-        username = 'admin'
-        password = 'AGConstruction2025!'
-        email = 'admin@agconstruction.pl'
+        username = os.environ.get('DJANGO_ADMIN_USER', 'admin')
+        password = os.environ.get('DJANGO_ADMIN_PASSWORD', '')
+        email = os.environ.get('DJANGO_ADMIN_EMAIL', 'biuro@agconstruction.pl')
+
+        if not password:
+            raise CommandError(
+                'Ustaw zmienną środowiskową DJANGO_ADMIN_PASSWORD przed uruchomieniem tej komendy.'
+            )
 
         if not User.objects.filter(username=username).exists():
             User.objects.create_superuser(username=username, password=password, email=email)
             self.stdout.write(self.style.SUCCESS(
-                f'\n✓ Superużytkownik utworzony:\n'
-                f'  Login:    {username}\n'
-                f'  Hasło:    {password}\n'
-                f'  Email:    {email}\n'
-                f'  Panel:    http://127.0.0.1:8000/admin/\n'
+                f'✓ Superużytkownik "{username}" utworzony pomyślnie.'
             ))
         else:
             self.stdout.write(self.style.WARNING(f'Użytkownik "{username}" już istnieje.'))
