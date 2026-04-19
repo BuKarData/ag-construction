@@ -259,6 +259,14 @@
 
         .offer-card.hidden { display: none; }
 
+        a.offer-card-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            border-radius: var(--ag-radius-lg);
+        }
+        a.offer-card-link:hover { text-decoration: none; color: inherit; }
+
         .offer-card-img {
             position: relative;
             height: 200px;
@@ -431,6 +439,7 @@
         .offers-table tr:last-child td { border-bottom: none; }
 
         .offers-table tr:hover td { background: var(--ag-gray-50); }
+        .offers-table tbody tr { cursor: pointer; }
 
         .offers-table tr.hidden { display: none; }
 
@@ -611,20 +620,23 @@
     <div class="cards-grid" id="cardsView">
         {% for item in oferty_data %}
         {% with o=item.obj %}
+        <a href="/oferta/{{ o.id }}/" class="offer-card-link">
         <div class="offer-card" data-status="{{ o.status }}">
             <div class="offer-card-img">
-                {% if o.zdjecie %}
+                {% if o.rzut %}
+                <img src="{{ o.rzut.url }}" alt="Rzut – {{ o.adres }}">
+                {% elif o.zdjecie %}
                 <img src="{{ o.zdjecie.url }}" alt="{{ o.adres }}">
                 {% else %}
                 <div class="offer-card-img-placeholder">
-                    <i class="bi bi-building"></i>
+                    <i class="bi bi-layout-text-window"></i>
                 </div>
                 {% endif %}
                 <span class="offer-status-badge badge-{{ o.status|cut:'_' }}">
                     {{ o.status|status_label }}
                 </span>
                 {% if o.rzut %}
-                <button class="rzut-btn" onclick="showRzut('{{ o.rzut.url }}', '{{ o.adres|escapejs }}')">
+                <button class="rzut-btn" onclick="event.preventDefault(); event.stopPropagation(); showRzut('{{ o.rzut.url }}', '{{ o.adres|escapejs }}')">
                     <i class="bi bi-map"></i> Rzut
                 </button>
                 {% endif %}
@@ -662,13 +674,14 @@
                         {% endif %}
                     </div>
                     {% if item.historia_json != '[]' %}
-                    <button class="btn-history" onclick="showHistory({{ o.id }}, '{{ o.adres|escapejs }}')">
+                    <button class="btn-history" onclick="event.preventDefault(); event.stopPropagation(); showHistory({{ o.id }}, '{{ o.adres|escapejs }}')">
                         <i class="bi bi-graph-up"></i> Historia
                     </button>
                     {% endif %}
                 </div>
             </div>
         </div>
+        </a>
         {% endwith %}
         {% endfor %}
     </div>
@@ -692,7 +705,7 @@
             <tbody>
                 {% for item in oferty_data %}
                 {% with o=item.obj %}
-                <tr data-status="{{ o.status }}">
+                <tr data-status="{{ o.status }}" onclick="window.location='/oferta/{{ o.id }}/'">
                     <td style="font-weight:600;color:var(--ag-gold);">{{ o.inwestycja.nazwa }}</td>
                     <td>
                         {% if o.numer_lokalu %}<strong>{{ o.numer_lokalu }}</strong> – {% endif %}
@@ -712,7 +725,7 @@
                     </td>
                     <td>
                         {% if item.historia_json != '[]' %}
-                        <button class="btn-history" onclick="showHistory({{ o.id }}, '{{ o.adres|escapejs }}')">
+                        <button class="btn-history" onclick="event.stopPropagation(); showHistory({{ o.id }}, '{{ o.adres|escapejs }}')">
                             <i class="bi bi-graph-up"></i>
                         </button>
                         {% endif %}
