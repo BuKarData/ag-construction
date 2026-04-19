@@ -74,7 +74,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+# Dodaj 'static/' tylko jeśli katalog istnieje (Railway nie ma pustych folderów z gita)
+_static_dir = BASE_DIR / 'static'
+STATICFILES_DIRS = [_static_dir] if _static_dir.exists() else []
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
