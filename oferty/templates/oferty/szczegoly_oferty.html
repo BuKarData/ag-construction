@@ -11,245 +11,338 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root {
-            --ag-navy:#0D1B2A; --ag-navy-light:#1C2F4A; --ag-gold:#C9973A; --ag-gold-light:#E8B857;
-            --ag-white:#FFFFFF; --ag-gray-50:#F8F9FA; --ag-gray-100:#F1F3F5; --ag-gray-200:#E9ECEF;
-            --ag-gray-600:#6C757D; --ag-gray-800:#343A40; --ag-text:#1A1F2E;
-            --ag-shadow:0 4px 24px rgba(13,27,42,.10); --ag-shadow-lg:0 12px 48px rgba(13,27,42,.16);
-            --ag-radius:12px; --ag-radius-lg:20px; --ag-transition:all .3s cubic-bezier(.4,0,.2,1);
+            --navy:#0D1B2A; --navy-l:#1C2F4A; --gold:#C9973A; --gold-l:#E8B857;
+            --white:#fff; --g50:#F8F9FA; --g100:#F1F3F5; --g200:#E9ECEF;
+            --g600:#6C757D; --g800:#343A40; --text:#1A1F2E;
+            --sh:0 4px 24px rgba(13,27,42,.10); --sh-lg:0 16px 48px rgba(13,27,42,.15);
+            --r:12px; --rl:20px; --tr:all .3s cubic-bezier(.4,0,.2,1);
         }
         *{margin:0;padding:0;box-sizing:border-box;}
         html{scroll-behavior:smooth;}
-        body{font-family:'Inter',sans-serif;color:var(--ag-text);background:var(--ag-gray-50);}
+        body{font-family:'Inter',sans-serif;color:var(--text);background:var(--g50);}
         h1,h2,h3,h4,h5{font-family:'Montserrat',sans-serif;font-weight:700;}
 
-        /* ── NAVBAR ── */
-        .navbar{background:var(--ag-navy);padding:0 5%;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.2);position:sticky;top:0;z-index:200;}
-        .navbar-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
-        .brand-logo{width:38px;height:38px;background:var(--ag-gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;font-size:16px;color:var(--ag-navy);}
-        .brand-main{font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;color:#fff;letter-spacing:2px;}
-        .brand-sub{font-size:10px;color:var(--ag-gold);letter-spacing:3px;text-transform:uppercase;display:block;}
-        .nav-back{color:rgba(255,255,255,.7);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:6px;transition:var(--ag-transition);}
-        .nav-back:hover{color:var(--ag-gold);}
+        /* NAVBAR */
+        .nav{background:var(--navy);padding:0 5%;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 16px rgba(0,0,0,.25);position:sticky;top:0;z-index:200;}
+        .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+        .nav-logo{width:38px;height:38px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;font-size:16px;color:var(--navy);}
+        .nav-name{display:flex;flex-direction:column;line-height:1.1;}
+        .nav-name b{font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;color:#fff;letter-spacing:2px;}
+        .nav-name small{font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+        .nav-back{color:rgba(255,255,255,.65);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:6px;transition:var(--tr);}
+        .nav-back:hover{color:var(--gold);}
 
-        /* ── PAGE ── */
-        .page-wrap{max-width:1360px;margin:0 auto;padding:32px 4% 80px;}
+        /* LAYOUT */
+        .wrap{max-width:1320px;margin:0 auto;padding:32px 4% 80px;}
 
-        .breadcrumb{font-size:13px;color:var(--ag-gray-600);margin-bottom:24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-        .breadcrumb a{color:var(--ag-gray-600);text-decoration:none;}
-        .breadcrumb a:hover{color:var(--ag-gold);}
-        .breadcrumb i{font-size:10px;color:var(--ag-gray-200);}
+        .crumb{font-size:13px;color:var(--g600);margin-bottom:28px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+        .crumb a{color:var(--g600);text-decoration:none;}
+        .crumb a:hover{color:var(--gold);}
+        .crumb i{font-size:10px;color:var(--g200);}
 
-        /* ── 3-COLUMN HERO GRID ── */
-        .hero-grid{
+        /* 2-COLUMN MAIN GRID */
+        .main-grid{
             display:grid;
-            grid-template-columns:280px 1fr 300px;
-            gap:20px;
+            grid-template-columns:1fr 380px;
+            gap:28px;
             align-items:start;
-            margin-bottom:28px;
         }
-        @media(max-width:1100px){.hero-grid{grid-template-columns:240px 1fr 260px;}}
-        @media(max-width:840px){.hero-grid{grid-template-columns:1fr;}}
+        @media(max-width:1000px){.main-grid{grid-template-columns:1fr 320px;}}
+        @media(max-width:780px){.main-grid{grid-template-columns:1fr;}}
 
-        /* ── LEFT PANEL: offer meta ── */
-        .meta-panel{background:var(--ag-white);border-radius:var(--ag-radius-lg);padding:28px 24px;box-shadow:var(--ag-shadow);display:flex;flex-direction:column;gap:20px;}
+        /* ── LEFT COLUMN ── */
+        .left-col{display:flex;flex-direction:column;gap:24px;}
 
-        .status-badge{display:inline-block;padding:5px 14px;border-radius:100px;font-size:12px;font-weight:700;}
-        .badge-dostepne{background:#D1FAE5;color:#065F46;}
-        .badge-sprzedane{background:#FEE2E2;color:#991B1B;}
-        .badge-rezerwacja{background:#FEF3C7;color:#92400E;}
-        .badge-w-budowie{background:#DBEAFE;color:#1E40AF;}
+        /* Image viewer */
+        .img-panel{background:var(--white);border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh);}
 
-        .offer-title{font-size:22px;color:var(--ag-navy);line-height:1.25;margin-bottom:4px;}
-        .offer-inv-link{font-size:13px;color:var(--ag-gold);text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
-        .offer-inv-link:hover{color:var(--ag-gold-light);}
+        .img-main{
+            position:relative;background:var(--g100);cursor:zoom-in;overflow:hidden;line-height:0;
+        }
+        .img-main img{
+            width:100%;height:580px;object-fit:contain;display:block;
+            transition:transform .5s ease;
+            background:var(--g50);
+        }
+        .img-main:hover img{transform:scale(1.015);}
+        .img-zoom-badge{
+            position:absolute;bottom:16px;right:16px;
+            background:rgba(13,27,42,.7);color:#fff;
+            font-size:12px;padding:7px 14px;border-radius:8px;
+            backdrop-filter:blur(6px);display:flex;align-items:center;gap:6px;
+            pointer-events:none;letter-spacing:.3px;
+        }
 
-        .divider{height:1px;background:var(--ag-gray-200);margin:4px 0;}
+        .img-no-photo{
+            width:100%;height:480px;
+            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+        }
+        .img-no-photo i{font-size:80px;color:rgba(201,151,58,.3);}
+        .img-no-photo span{font-size:14px;color:var(--g600);}
 
-        .specs-stack{display:flex;flex-direction:column;gap:10px;}
-        .spec-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--ag-gray-50);border:1px solid var(--ag-gray-200);border-radius:var(--ag-radius);}
-        .spec-row-lbl{font-size:12px;color:var(--ag-gray-600);text-transform:uppercase;letter-spacing:.5px;}
-        .spec-row-val{font-family:'Montserrat',sans-serif;font-weight:700;font-size:17px;color:var(--ag-navy);}
+        .img-thumbs{
+            display:flex;gap:10px;padding:14px 18px;
+            overflow-x:auto;border-top:1px solid var(--g100);
+        }
+        .img-thumbs::-webkit-scrollbar{height:4px;}
+        .img-thumbs::-webkit-scrollbar-thumb{background:var(--g200);border-radius:4px;}
+        .img-thumb{
+            width:88px;height:64px;object-fit:cover;flex-shrink:0;
+            border-radius:8px;cursor:pointer;opacity:.55;
+            border:2.5px solid transparent;transition:var(--tr);
+        }
+        .img-thumb:hover,.img-thumb.active{opacity:1;border-color:var(--gold);}
 
-        /* ── CENTER: image carousel ── */
-        .image-panel{background:var(--ag-white);border-radius:var(--ag-radius-lg);overflow:hidden;box-shadow:var(--ag-shadow);}
+        /* Standard wykończenia */
+        .standard-card{background:var(--white);border-radius:var(--rl);padding:36px 40px;box-shadow:var(--sh);}
+        .card-title{
+            font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+            color:var(--gold);margin-bottom:20px;
+            display:flex;align-items:center;gap:10px;
+        }
+        .card-title::after{content:'';flex:1;height:1px;background:var(--g200);}
+        .standard-text{font-size:15px;line-height:1.9;color:var(--g800);white-space:pre-line;}
 
-        .img-main-wrap{position:relative;background:linear-gradient(135deg,var(--ag-navy),var(--ag-navy-light));cursor:zoom-in;overflow:hidden;line-height:0;}
-        .img-main-wrap img{width:100%;height:560px;object-fit:contain;display:block;transition:transform .4s ease;background:var(--ag-gray-100);}
-        .img-main-wrap:hover img{transform:scale(1.015);}
-        .img-zoom-hint{position:absolute;bottom:14px;right:14px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;padding:6px 12px;border-radius:6px;backdrop-filter:blur(4px);display:flex;align-items:center;gap:6px;pointer-events:none;transition:var(--ag-transition);}
+        /* Pomieszczenia / świadczenia / rabaty */
+        .table-card{background:var(--white);border-radius:var(--rl);padding:32px 40px;box-shadow:var(--sh);}
+        .dtable{width:100%;border-collapse:collapse;font-size:14px;}
+        .dtable th{text-align:left;padding:10px 14px;font-size:11px;color:var(--g600);font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--g200);background:var(--g50);}
+        .dtable td{padding:13px 14px;border-bottom:1px solid var(--g100);color:var(--text);}
+        .dtable tr:last-child td{border-bottom:none;}
+        .dtable tr:hover td{background:var(--g50);}
 
-        .img-placeholder{width:100%;height:480px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:rgba(255,255,255,.25);}
-        .img-placeholder i{font-size:80px;color:rgba(201,151,58,.35);}
+        /* ── RIGHT COLUMN ── */
+        .right-col{display:flex;flex-direction:column;gap:20px;position:sticky;top:88px;}
+        @media(max-width:780px){.right-col{position:static;}}
 
-        .img-strip{display:flex;gap:10px;padding:14px 16px;overflow-x:auto;border-top:1px solid var(--ag-gray-100);}
-        .img-strip::-webkit-scrollbar{height:4px;}
-        .img-strip::-webkit-scrollbar-thumb{background:var(--ag-gray-200);border-radius:4px;}
-        .img-thumb{width:100px;height:72px;object-fit:cover;flex-shrink:0;border-radius:8px;cursor:pointer;opacity:.6;border:2.5px solid transparent;transition:var(--ag-transition);}
-        .img-thumb:hover,.img-thumb.active{opacity:1;border-color:var(--ag-gold);}
+        /* Offer header card */
+        .offer-header-card{background:var(--white);border-radius:var(--rl);padding:28px;box-shadow:var(--sh);}
 
-        /* ── RIGHT PANEL: price + investment ── */
-        .right-panel{display:flex;flex-direction:column;gap:16px;}
+        .status-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:12px;font-weight:700;margin-bottom:14px;}
+        .s-dostepne{background:#D1FAE5;color:#065F46;}
+        .s-sprzedane{background:#FEE2E2;color:#991B1B;}
+        .s-rezerwacja{background:#FEF3C7;color:#92400E;}
+        .s-w_budowie{background:#DBEAFE;color:#1E40AF;}
 
-        .price-card{background:var(--ag-navy);border-radius:var(--ag-radius-lg);padding:26px;box-shadow:var(--ag-shadow-lg);color:#fff;}
+        .offer-title{font-size:26px;color:var(--navy);line-height:1.2;margin-bottom:6px;}
+        .offer-inv-link{font-size:13px;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:5px;margin-bottom:22px;}
+        .offer-inv-link:hover{color:var(--gold-l);}
+
+        .specs-list{display:flex;flex-direction:column;gap:0;}
+        .spec-row{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:12px 0;border-bottom:1px solid var(--g100);
+        }
+        .spec-row:last-child{border-bottom:none;}
+        .spec-lbl{font-size:12px;color:var(--g600);text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
+        .spec-val{font-family:'Montserrat',sans-serif;font-weight:700;font-size:16px;color:var(--navy);}
+
+        /* Price card */
+        .price-card{background:var(--navy);border-radius:var(--rl);padding:26px 28px;box-shadow:var(--sh-lg);color:#fff;}
         .price-lbl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px;}
-        .price-main{font-family:'Montserrat',sans-serif;font-size:1.9rem;font-weight:800;color:var(--ag-gold);line-height:1;margin-bottom:4px;}
+        .price-main{font-family:'Montserrat',sans-serif;font-size:2rem;font-weight:800;color:var(--gold);line-height:1;margin-bottom:4px;}
         .price-m2{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:22px;}
-        .btn-call{display:block;background:var(--ag-gold);color:var(--ag-navy);text-align:center;padding:13px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;transition:var(--ag-transition);margin-bottom:10px;}
-        .btn-call:hover{background:var(--ag-gold-light);color:var(--ag-navy);text-decoration:none;}
-        .btn-mail{display:block;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.2);text-align:center;padding:12px;border-radius:10px;font-weight:600;font-size:13px;text-decoration:none;transition:var(--ag-transition);}
-        .btn-mail:hover{border-color:var(--ag-gold);color:var(--ag-gold);text-decoration:none;}
+        .btn-call{display:block;background:var(--gold);color:var(--navy);text-align:center;padding:14px;border-radius:10px;font-weight:700;font-size:15px;text-decoration:none;transition:var(--tr);margin-bottom:10px;}
+        .btn-call:hover{background:var(--gold-l);color:var(--navy);text-decoration:none;}
+        .btn-mail{display:block;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.2);text-align:center;padding:13px;border-radius:10px;font-weight:600;font-size:13px;text-decoration:none;transition:var(--tr);}
+        .btn-mail:hover{border-color:var(--gold);color:var(--gold);text-decoration:none;}
 
-        .info-card{background:var(--ag-white);border-radius:var(--ag-radius-lg);padding:20px 22px;box-shadow:var(--ag-shadow);}
-        .info-card-lbl{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ag-gray-600);margin-bottom:14px;}
-        .info-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;padding:8px 0;border-bottom:1px solid var(--ag-gray-100);}
+        /* Investment info */
+        .info-card{background:var(--white);border-radius:var(--rl);padding:22px 24px;box-shadow:var(--sh);}
+        .info-card-lbl{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--g600);margin-bottom:14px;}
+        .info-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;padding:9px 0;border-bottom:1px solid var(--g100);}
         .info-row:last-child{border-bottom:none;padding-bottom:0;}
-        .info-row i{color:var(--ag-gold);width:16px;flex-shrink:0;margin-top:1px;font-size:14px;}
-        .info-row span{color:var(--ag-gray-800);line-height:1.45;}
+        .info-row i{color:var(--gold);width:16px;flex-shrink:0;margin-top:2px;font-size:14px;}
+        .info-row span{color:var(--g800);line-height:1.45;}
 
-        .chart-card{background:var(--ag-white);border-radius:var(--ag-radius-lg);padding:20px 22px;box-shadow:var(--ag-shadow);}
-        .chart-lbl{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ag-gray-600);margin-bottom:18px;}
+        /* Chart */
+        .chart-card{background:var(--white);border-radius:var(--rl);padding:22px 24px;box-shadow:var(--sh);}
+        .chart-lbl{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--g600);margin-bottom:18px;}
 
-        /* ── FULL-WIDTH SECTIONS ── */
-        .full-section{background:var(--ag-white);border-radius:var(--ag-radius-lg);padding:36px 44px;box-shadow:var(--ag-shadow);margin-bottom:24px;}
-        .full-section-title{font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--ag-gold);margin-bottom:24px;display:flex;align-items:center;gap:10px;}
-        .full-section-title::after{content:'';flex:1;height:1px;background:var(--ag-gray-200);}
+        /* LIGHTBOX */
+        .lb{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.94);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;}
+        .lb.on{display:flex;}
+        .lb-img-wrap{max-width:95vw;max-height:90vh;}
+        .lb-img-wrap img{max-width:100%;max-height:88vh;object-fit:contain;border-radius:8px;display:block;box-shadow:0 0 80px rgba(0,0,0,.6);}
+        .lb-x{position:fixed;top:18px;right:22px;background:rgba(255,255,255,.1);border:none;color:#fff;width:46px;height:46px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--tr);}
+        .lb-x:hover{background:var(--gold);color:var(--navy);}
+        .lb-arr{position:fixed;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:none;color:#fff;width:50px;height:50px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--tr);}
+        .lb-arr:hover{background:var(--gold);color:var(--navy);}
+        .lb-l{left:18px;} .lb-r{right:18px;}
+        .lb-cnt{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.45);font-size:13px;}
 
-        .standard-text{font-size:15px;line-height:1.9;color:var(--ag-gray-800);white-space:pre-line;}
-
-        .rooms-table{width:100%;border-collapse:collapse;font-size:14px;}
-        .rooms-table th{text-align:left;padding:10px 16px;font-size:12px;color:var(--ag-gray-600);font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--ag-gray-200);background:var(--ag-gray-50);}
-        .rooms-table td{padding:13px 16px;border-bottom:1px solid var(--ag-gray-100);}
-        .rooms-table tr:last-child td{border-bottom:none;}
-        .rooms-table tr:hover td{background:var(--ag-gray-50);}
-
-        /* ── LIGHTBOX ── */
-        .lightbox{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.93);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;}
-        .lightbox.active{display:flex;}
-        .lb-inner{position:relative;max-width:95vw;max-height:92vh;display:flex;align-items:center;}
-        .lb-inner img{max-width:100%;max-height:88vh;object-fit:contain;border-radius:8px;display:block;box-shadow:0 0 80px rgba(0,0,0,.6);}
-        .lb-close{position:fixed;top:20px;right:24px;background:rgba(255,255,255,.1);border:none;color:#fff;width:46px;height:46px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--ag-transition);z-index:10;}
-        .lb-close:hover{background:var(--ag-gold);color:var(--ag-navy);}
-        .lb-nav{position:fixed;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:none;color:#fff;width:50px;height:50px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--ag-transition);z-index:10;}
-        .lb-nav:hover{background:var(--ag-gold);color:var(--ag-navy);}
-        .lb-prev{left:20px;} .lb-next{right:20px;}
-        .lb-counter{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:13px;}
-
-        @media(max-width:768px){
-            .full-section{padding:24px 20px;}
-            .img-main-wrap img{height:320px;}
+        @media(max-width:680px){
+            .img-main img{height:320px;}
+            .standard-card,.table-card{padding:22px 18px;}
+            .offer-header-card{padding:20px;}
         }
     </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar">
-    <a href="/" class="navbar-brand">
-        <div class="brand-logo">AG</div>
-        <div style="display:flex;flex-direction:column;line-height:1.1;margin-left:4px;">
-            <span class="brand-main">AG</span>
-            <span class="brand-sub">Construction</span>
+<nav class="nav">
+    <a href="/" class="nav-brand">
+        <div class="nav-logo">AG</div>
+        <div class="nav-name">
+            <b>AG</b>
+            <small>Construction</small>
         </div>
     </a>
     <a href="/oferty/" class="nav-back"><i class="bi bi-arrow-left"></i> Wróć do ofert</a>
 </nav>
 
-<div class="page-wrap">
+<div class="wrap">
 
-    <div class="breadcrumb">
+    <div class="crumb">
         <a href="/">Strona główna</a>
         <i class="bi bi-chevron-right"></i>
         <a href="/oferty/">Oferty</a>
         <i class="bi bi-chevron-right"></i>
         <a href="/inwestycje/{{ oferta.inwestycja.pk }}/">{{ oferta.inwestycja.nazwa }}</a>
         <i class="bi bi-chevron-right"></i>
-        <span style="color:var(--ag-text);font-weight:600;">{{ oferta.numer_lokalu|default:oferta.adres }}</span>
+        <span style="color:var(--text);font-weight:600;">{{ oferta.numer_lokalu|default:oferta.adres }}</span>
     </div>
 
-    <!-- ── 3-COLUMN HERO ── -->
-    <div class="hero-grid">
+    <div class="main-grid">
 
-        <!-- LEFT: offer meta -->
-        <div class="meta-panel">
-            {% with oferta.status as st %}
-            <span class="status-badge {% if st == 'dostepne' %}badge-dostepne{% elif st == 'sprzedane' %}badge-sprzedane{% elif st == 'rezerwacja' %}badge-rezerwacja{% else %}badge-w-budowie{% endif %}">
-                {{ oferta.get_status_display }}
-            </span>
-            {% endwith %}
+        <!-- ── LEFT: images + standard ── -->
+        <div class="left-col">
 
-            <div>
+            <div class="img-panel">
+                {% if oferta.rzut %}
+                <div class="img-main" onclick="lbOpen(0)" id="imgMain">
+                    <img src="{{ oferta.rzut.url }}" alt="Rzut lokalu" id="mainImg">
+                    <div class="img-zoom-badge"><i class="bi bi-zoom-in"></i> Powiększ</div>
+                </div>
+                {% elif oferta.zdjecie %}
+                <div class="img-main" onclick="lbOpen(0)" id="imgMain">
+                    <img src="{{ oferta.zdjecie.url }}" alt="{{ oferta.adres }}" id="mainImg">
+                    <div class="img-zoom-badge"><i class="bi bi-zoom-in"></i> Powiększ</div>
+                </div>
+                {% else %}
+                <div class="img-no-photo">
+                    <i class="bi bi-layout-text-window"></i>
+                    <span>Brak rzutu lokalu</span>
+                </div>
+                {% endif %}
+
+                {% with all_photos=oferta.inwestycja.zdjecia.all %}
+                {% if all_photos or oferta.zdjecie %}
+                <div class="img-thumbs">
+                    {% if oferta.rzut %}
+                    <img src="{{ oferta.rzut.url }}" class="img-thumb active" onclick="switchImg('{{ oferta.rzut.url }}',this,0)" alt="Rzut">
+                    {% elif oferta.zdjecie %}
+                    <img src="{{ oferta.zdjecie.url }}" class="img-thumb active" onclick="switchImg('{{ oferta.zdjecie.url }}',this,0)" alt="">
+                    {% endif %}
+                    {% for z in all_photos %}
+                    <img src="{{ z.obraz.url }}" class="img-thumb" onclick="switchImg('{{ z.obraz.url }}',this,{{ forloop.counter }})" alt="">
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+            </div>
+
+            {% if oferta.inwestycja.standard %}
+            <div class="standard-card">
+                <div class="card-title"><i class="bi bi-gem"></i> Standard wykończenia</div>
+                <p class="standard-text">{{ oferta.inwestycja.standard }}</p>
+            </div>
+            {% endif %}
+
+            {% if oferta.pomieszczenia.all %}
+            <div class="table-card">
+                <div class="card-title"><i class="bi bi-door-open"></i> Pomieszczenia przynależne</div>
+                <table class="dtable">
+                    <thead><tr><th>Pomieszczenie</th><th>Powierzchnia</th><th>Cena</th></tr></thead>
+                    <tbody>
+                        {% for p in oferta.pomieszczenia.all %}
+                        <tr>
+                            <td>{{ p.nazwa }}</td>
+                            <td>{% if p.powierzchnia %}{{ p.powierzchnia }} m²{% else %}—{% endif %}</td>
+                            <td>{% if p.cena %}{{ p.cena|floatformat:0 }} PLN{% else %}—{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if oferta.swiadczenia.all %}
+            <div class="table-card">
+                <div class="card-title"><i class="bi bi-receipt"></i> Świadczenia pieniężne</div>
+                <table class="dtable">
+                    <thead><tr><th>Nazwa</th><th>Kwota</th><th>Opis</th></tr></thead>
+                    <tbody>
+                        {% for s in oferta.swiadczenia.all %}
+                        <tr><td>{{ s.nazwa }}</td><td>{{ s.kwota|floatformat:0 }} PLN</td><td>{{ s.opis|default:"—" }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if oferta.rabaty.all %}
+            <div class="table-card">
+                <div class="card-title"><i class="bi bi-tag"></i> Rabaty</div>
+                <table class="dtable">
+                    <thead><tr><th>Nazwa</th><th>Wartość</th><th>Obowiązuje</th></tr></thead>
+                    <tbody>
+                        {% for r in oferta.rabaty.all %}
+                        <tr>
+                            <td>{{ r.nazwa }}</td>
+                            <td>{% if r.typ == 'procentowy' %}{{ r.wartosc }}%{% else %}{{ r.wartosc|floatformat:0 }} PLN{% endif %}</td>
+                            <td>{{ r.data_od|date:"d.m.Y" }} – {{ r.data_do|date:"d.m.Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- ── RIGHT: all offer info ── -->
+        <div class="right-col">
+
+            <!-- Offer header -->
+            <div class="offer-header-card">
+                {% with oferta.status as st %}
+                <div class="status-badge s-{{ st }}">
+                    <i class="bi {% if st == 'dostepne' %}bi-check-circle{% elif st == 'sprzedane' %}bi-x-circle{% elif st == 'rezerwacja' %}bi-clock{% else %}bi-hammer{% endif %}"></i>
+                    {{ oferta.get_status_display }}
+                </div>
+                {% endwith %}
                 <h1 class="offer-title">Lokal {{ oferta.numer_lokalu|default:oferta.adres }}</h1>
                 <a href="/inwestycje/{{ oferta.inwestycja.pk }}/" class="offer-inv-link">
                     <i class="bi bi-buildings"></i> {{ oferta.inwestycja.nazwa }}
                 </a>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="specs-stack">
-                {% if oferta.metraz %}
-                <div class="spec-row">
-                    <span class="spec-row-lbl">Metraż</span>
-                    <span class="spec-row-val">{{ oferta.metraz }} m²</span>
+                <div class="specs-list">
+                    {% if oferta.metraz %}
+                    <div class="spec-row">
+                        <span class="spec-lbl">Metraż</span>
+                        <span class="spec-val">{{ oferta.metraz }} m²</span>
+                    </div>
+                    {% endif %}
+                    <div class="spec-row">
+                        <span class="spec-lbl">Pokoje</span>
+                        <span class="spec-val">{{ oferta.pokoje }}</span>
+                    </div>
+                    {% if oferta.pietro is not None %}
+                    <div class="spec-row">
+                        <span class="spec-lbl">Piętro</span>
+                        <span class="spec-val">{{ oferta.pietro }}</span>
+                    </div>
+                    {% endif %}
+                    {% if oferta.rodzaj_lokalu %}
+                    <div class="spec-row">
+                        <span class="spec-lbl">Rodzaj</span>
+                        <span class="spec-val" style="font-size:14px;">{{ oferta.rodzaj_lokalu }}</span>
+                    </div>
+                    {% endif %}
                 </div>
-                {% endif %}
-                <div class="spec-row">
-                    <span class="spec-row-lbl">Pokoje</span>
-                    <span class="spec-row-val">{{ oferta.pokoje }}</span>
-                </div>
-                {% if oferta.pietro is not None %}
-                <div class="spec-row">
-                    <span class="spec-row-lbl">Piętro</span>
-                    <span class="spec-row-val">{{ oferta.pietro }}</span>
-                </div>
-                {% endif %}
-                {% if oferta.rodzaj_lokalu %}
-                <div class="spec-row">
-                    <span class="spec-row-lbl">Rodzaj</span>
-                    <span class="spec-row-val" style="font-size:14px;">{{ oferta.rodzaj_lokalu }}</span>
-                </div>
-                {% endif %}
             </div>
-        </div>
 
-        <!-- CENTER: image carousel -->
-        <div class="image-panel">
-            {% if oferta.rzut %}
-            <div class="img-main-wrap" onclick="openLightbox(0)" id="mainImgWrap">
-                <img src="{{ oferta.rzut.url }}" alt="Rzut lokalu" id="mainImg">
-                <div class="img-zoom-hint"><i class="bi bi-zoom-in"></i> Powiększ</div>
-            </div>
-            {% elif oferta.zdjecie %}
-            <div class="img-main-wrap" onclick="openLightbox(0)" id="mainImgWrap">
-                <img src="{{ oferta.zdjecie.url }}" alt="{{ oferta.adres }}" id="mainImg">
-                <div class="img-zoom-hint"><i class="bi bi-zoom-in"></i> Powiększ</div>
-            </div>
-            {% else %}
-            <div class="img-placeholder">
-                <i class="bi bi-layout-text-window"></i>
-                <span style="font-size:14px;">Brak rzutu lokalu</span>
-            </div>
-            {% endif %}
-
-            {% with photos=oferta.inwestycja.zdjecia.all %}
-            {% if photos or oferta.zdjecie %}
-            <div class="img-strip">
-                {% if oferta.rzut %}
-                <img src="{{ oferta.rzut.url }}" class="img-thumb active" onclick="switchImg('{{ oferta.rzut.url }}',this,0)" alt="Rzut">
-                {% elif oferta.zdjecie %}
-                <img src="{{ oferta.zdjecie.url }}" class="img-thumb active" onclick="switchImg('{{ oferta.zdjecie.url }}',this,0)" alt="Zdjęcie">
-                {% endif %}
-                {% for z in photos %}
-                <img src="{{ z.obraz.url }}" class="img-thumb" onclick="switchImg('{{ z.obraz.url }}',this,{{ forloop.counter }})" alt="Zdjęcie {{ forloop.counter }}">
-                {% endfor %}
-            </div>
-            {% endif %}
-            {% endwith %}
-        </div>
-
-        <!-- RIGHT: price + info -->
-        <div class="right-panel">
-
+            <!-- Price -->
             <div class="price-card">
                 <div class="price-lbl">Cena</div>
                 {% if oferta.cena_aktualna %}
@@ -265,12 +358,13 @@
                 <a href="mailto:biuro@agconstruction.pl" class="btn-mail"><i class="bi bi-envelope"></i>&nbsp; Wyślij zapytanie</a>
             </div>
 
+            <!-- Investment info -->
             <div class="info-card">
                 <div class="info-card-lbl">Inwestycja</div>
                 <div class="info-row"><i class="bi bi-buildings"></i><span>{{ oferta.inwestycja.nazwa }}</span></div>
                 <div class="info-row"><i class="bi bi-geo-alt"></i><span>{{ oferta.inwestycja.adres }}</span></div>
                 {% if oferta.inwestycja.termin_zakonczenia %}
-                <div class="info-row"><i class="bi bi-calendar3"></i><span>Termin: {{ oferta.inwestycja.termin_zakonczenia|date:"m.Y" }}</span></div>
+                <div class="info-row"><i class="bi bi-calendar3"></i><span>Termin oddania: {{ oferta.inwestycja.termin_zakonczenia|date:"m.Y" }}</span></div>
                 {% endif %}
                 {% if oferta.numer_oferty %}
                 <div class="info-row"><i class="bi bi-hash"></i><span>Nr oferty: {{ oferta.numer_oferty }}</span></div>
@@ -286,113 +380,55 @@
 
         </div>
     </div>
-
-    <!-- ── FULL-WIDTH SECTIONS ── -->
-
-    {% if oferta.pomieszczenia.all %}
-    <div class="full-section">
-        <div class="full-section-title"><i class="bi bi-door-open"></i> Pomieszczenia przynależne</div>
-        <table class="rooms-table">
-            <thead><tr><th>Pomieszczenie</th><th>Powierzchnia</th><th>Cena</th></tr></thead>
-            <tbody>
-                {% for p in oferta.pomieszczenia.all %}
-                <tr>
-                    <td>{{ p.nazwa }}</td>
-                    <td>{% if p.powierzchnia %}{{ p.powierzchnia }} m²{% else %}—{% endif %}</td>
-                    <td>{% if p.cena %}{{ p.cena|floatformat:0 }} PLN{% else %}—{% endif %}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% endif %}
-
-    {% if oferta.inwestycja.standard %}
-    <div class="full-section">
-        <div class="full-section-title"><i class="bi bi-gem"></i> Standard wykończenia</div>
-        <p class="standard-text">{{ oferta.inwestycja.standard }}</p>
-    </div>
-    {% endif %}
-
-    {% if oferta.swiadczenia.all %}
-    <div class="full-section">
-        <div class="full-section-title"><i class="bi bi-receipt"></i> Świadczenia pieniężne</div>
-        <table class="rooms-table">
-            <thead><tr><th>Nazwa</th><th>Kwota</th><th>Opis</th></tr></thead>
-            <tbody>
-                {% for s in oferta.swiadczenia.all %}
-                <tr><td>{{ s.nazwa }}</td><td>{{ s.kwota|floatformat:0 }} PLN</td><td>{{ s.opis|default:"—" }}</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% endif %}
-
-    {% if oferta.rabaty.all %}
-    <div class="full-section">
-        <div class="full-section-title"><i class="bi bi-tag"></i> Rabaty</div>
-        <table class="rooms-table">
-            <thead><tr><th>Nazwa</th><th>Wartość</th><th>Obowiązuje</th></tr></thead>
-            <tbody>
-                {% for r in oferta.rabaty.all %}
-                <tr>
-                    <td>{{ r.nazwa }}</td>
-                    <td>{% if r.typ == 'procentowy' %}{{ r.wartosc }}%{% else %}{{ r.wartosc|floatformat:0 }} PLN{% endif %}</td>
-                    <td>{{ r.data_od|date:"d.m.Y" }} – {{ r.data_do|date:"d.m.Y" }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% endif %}
-
 </div>
 
 <!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
-    <button class="lb-close" onclick="closeLightbox()"><i class="bi bi-x"></i></button>
-    <button class="lb-nav lb-prev" id="lbPrev" onclick="lbNav(-1)"><i class="bi bi-chevron-left"></i></button>
-    <div class="lb-inner"><img id="lbImg" src="" alt=""></div>
-    <button class="lb-nav lb-next" id="lbNext" onclick="lbNav(1)"><i class="bi bi-chevron-right"></i></button>
-    <div class="lb-counter" id="lbCounter"></div>
+<div class="lb" id="lb" onclick="if(event.target===this)lbClose()">
+    <button class="lb-x" onclick="lbClose()"><i class="bi bi-x"></i></button>
+    <button class="lb-arr lb-l" id="lbL" onclick="lbNav(-1)"><i class="bi bi-chevron-left"></i></button>
+    <div class="lb-img-wrap"><img id="lbImg" src="" alt=""></div>
+    <button class="lb-arr lb-r" id="lbR" onclick="lbNav(1)"><i class="bi bi-chevron-right"></i></button>
+    <div class="lb-cnt" id="lbCnt"></div>
 </div>
 
 <script>
-const allImages = [];
-{% if oferta.rzut %}allImages.push("{{ oferta.rzut.url }}");
-{% elif oferta.zdjecie %}allImages.push("{{ oferta.zdjecie.url }}");{% endif %}
-{% for z in oferta.inwestycja.zdjecia.all %}allImages.push("{{ z.obraz.url }}");{% endfor %}
+const imgs = [];
+{% if oferta.rzut %}imgs.push("{{ oferta.rzut.url }}");
+{% elif oferta.zdjecie %}imgs.push("{{ oferta.zdjecie.url }}");{% endif %}
+{% for z in oferta.inwestycja.zdjecia.all %}imgs.push("{{ z.obraz.url }}");{% endfor %}
 
-let lbIdx = 0;
+let lbI = 0;
 
-function openLightbox(idx) {
-    if (!allImages.length) return;
-    lbIdx = idx || 0; lbShow();
-    document.getElementById('lightbox').classList.add('active');
+function lbOpen(i) {
+    if (!imgs.length) return;
+    lbI = i; lbRender();
+    document.getElementById('lb').classList.add('on');
     document.body.style.overflow = 'hidden';
 }
-function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('active');
+function lbClose() {
+    document.getElementById('lb').classList.remove('on');
     document.body.style.overflow = '';
 }
-function lbNav(d) { lbIdx = (lbIdx + d + allImages.length) % allImages.length; lbShow(); }
-function lbShow() {
-    document.getElementById('lbImg').src = allImages[lbIdx];
-    document.getElementById('lbCounter').textContent = (lbIdx + 1) + ' / ' + allImages.length;
-    const multi = allImages.length > 1;
-    document.getElementById('lbPrev').style.display = multi ? 'flex' : 'none';
-    document.getElementById('lbNext').style.display = multi ? 'flex' : 'none';
+function lbNav(d) { lbI = (lbI + d + imgs.length) % imgs.length; lbRender(); }
+function lbRender() {
+    document.getElementById('lbImg').src = imgs[lbI];
+    document.getElementById('lbCnt').textContent = (lbI + 1) + ' / ' + imgs.length;
+    const multi = imgs.length > 1;
+    document.getElementById('lbL').style.display = multi ? 'flex' : 'none';
+    document.getElementById('lbR').style.display = multi ? 'flex' : 'none';
 }
 function switchImg(url, el, idx) {
     const m = document.getElementById('mainImg');
-    if (m) m.src = url;
+    if (m) { m.src = url; }
+    const wrap = document.getElementById('imgMain');
+    if (wrap) wrap.onclick = () => lbOpen(idx < imgs.length ? idx : 0);
+    lbI = idx < imgs.length ? idx : 0;
     document.querySelectorAll('.img-thumb').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
-    lbIdx = idx < allImages.length ? idx : 0;
 }
 document.addEventListener('keydown', e => {
-    if (!document.getElementById('lightbox').classList.contains('active')) return;
-    if (e.key === 'Escape') closeLightbox();
+    if (!document.getElementById('lb').classList.contains('on')) return;
+    if (e.key === 'Escape') lbClose();
     if (e.key === 'ArrowRight') lbNav(1);
     if (e.key === 'ArrowLeft') lbNav(-1);
 });
@@ -401,7 +437,14 @@ document.addEventListener('keydown', e => {
 (function(){
     const labels=[{% for c in historia_cen %}"{{ c.data|date:"d.m.Y" }}"{% if not forloop.last %},{% endif %}{% endfor %}];
     const data=[{% for c in historia_cen %}{{ c.kwota }}{% if not forloop.last %},{% endif %}{% endfor %}];
-    new Chart(document.getElementById('priceChart'),{type:'line',data:{labels,datasets:[{data,borderColor:'#C9973A',backgroundColor:'rgba(201,151,58,.08)',borderWidth:2,pointBackgroundColor:'#C9973A',fill:true,tension:.3}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>parseInt(v).toLocaleString('pl-PL')+' PLN',font:{size:10}},grid:{color:'#F1F3F5'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}});
+    new Chart(document.getElementById('priceChart'),{
+        type:'line',
+        data:{labels,datasets:[{data,borderColor:'#C9973A',backgroundColor:'rgba(201,151,58,.08)',borderWidth:2,pointBackgroundColor:'#C9973A',pointRadius:4,fill:true,tension:.35}]},
+        options:{responsive:true,plugins:{legend:{display:false}},scales:{
+            y:{ticks:{callback:v=>parseInt(v).toLocaleString('pl-PL')+' PLN',font:{size:10}},grid:{color:'#F1F3F5'}},
+            x:{ticks:{font:{size:10}},grid:{display:false}}
+        }}
+    });
 })();
 {% endif %}
 </script>
