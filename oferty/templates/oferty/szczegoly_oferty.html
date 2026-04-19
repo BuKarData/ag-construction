@@ -1,0 +1,370 @@
+{% load oferty_filters %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ oferta.numer_lokalu|default:oferta.adres }} – AG Construction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --ag-navy: #0D1B2A; --ag-navy-light: #1C2F4A; --ag-gold: #C9973A; --ag-gold-light: #E8B857;
+            --ag-white: #FFFFFF; --ag-gray-50: #F8F9FA; --ag-gray-100: #F1F3F5; --ag-gray-200: #E9ECEF;
+            --ag-gray-600: #6C757D; --ag-gray-800: #343A40; --ag-text: #1A1F2E;
+            --ag-shadow: 0 4px 24px rgba(13,27,42,0.10); --ag-shadow-lg: 0 12px 48px rgba(13,27,42,0.16);
+            --ag-radius: 12px; --ag-radius-lg: 20px; --ag-transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body { font-family:'Inter',sans-serif; color:var(--ag-text); background:var(--ag-gray-50); }
+        h1,h2,h3,h4,h5 { font-family:'Montserrat',sans-serif; font-weight:700; }
+
+        .navbar {
+            background: var(--ag-navy);
+            padding: 0 5%; height: 64px;
+            display:flex; align-items:center; justify-content:space-between;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+            position:sticky; top:0; z-index:100;
+        }
+        .navbar-brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
+        .brand-logo { width:38px; height:38px; background:var(--ag-gold); border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-weight:800; font-size:16px; color:var(--ag-navy); }
+        .brand-main { font-family:'Montserrat',sans-serif; font-weight:800; font-size:15px; color:#fff; letter-spacing:2px; }
+        .brand-sub { font-size:10px; color:var(--ag-gold); letter-spacing:3px; text-transform:uppercase; }
+        .nav-back { color:rgba(255,255,255,0.7); text-decoration:none; font-size:14px; display:flex; align-items:center; gap:6px; transition:var(--ag-transition); }
+        .nav-back:hover { color:var(--ag-gold); }
+
+        .page-wrap { max-width:1100px; margin:0 auto; padding:40px 5% 80px; }
+
+        .breadcrumb { font-size:13px; color:var(--ag-gray-600); margin-bottom:24px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+        .breadcrumb a { color:var(--ag-gray-600); text-decoration:none; } .breadcrumb a:hover { color:var(--ag-gold); }
+        .breadcrumb-sep { color:var(--ag-gray-200); }
+
+        .detail-grid { display:grid; grid-template-columns:1fr 340px; gap:32px; align-items:start; }
+        @media (max-width:900px) { .detail-grid { grid-template-columns:1fr; } }
+
+        /* Left column */
+        .detail-main {}
+
+        .offer-hero {
+            background: var(--ag-white);
+            border-radius: var(--ag-radius-lg);
+            overflow:hidden;
+            box-shadow:var(--ag-shadow);
+            margin-bottom:24px;
+        }
+
+        .offer-hero-img {
+            width:100%; height:380px; object-fit:cover; display:block;
+            background: linear-gradient(135deg, var(--ag-navy), var(--ag-navy-light));
+        }
+
+        .offer-hero-placeholder {
+            width:100%; height:380px;
+            background: linear-gradient(135deg, var(--ag-navy), var(--ag-navy-light));
+            display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
+            color:rgba(255,255,255,0.3); font-size:72px;
+        }
+
+        .offer-hero-body { padding:28px 32px; }
+        .offer-title { font-size:24px; color:var(--ag-navy); margin-bottom:6px; }
+        .offer-inv-link { font-size:14px; color:var(--ag-gold); text-decoration:none; display:inline-flex; align-items:center; gap:6px; margin-bottom:20px; }
+        .offer-inv-link:hover { color:var(--ag-gold-light); }
+
+        .offer-specs { display:grid; grid-template-columns:repeat(auto-fill, minmax(130px,1fr)); gap:16px; margin-bottom:24px; }
+        .spec-item { background:var(--ag-gray-50); border:1px solid var(--ag-gray-200); border-radius:var(--ag-radius); padding:16px; text-align:center; }
+        .spec-val { font-family:'Montserrat',sans-serif; font-weight:700; font-size:20px; color:var(--ag-navy); }
+        .spec-lbl { font-size:12px; color:var(--ag-gray-600); text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
+
+        .status-badge { display:inline-block; padding:6px 16px; border-radius:100px; font-size:12px; font-weight:700; }
+        .badge-dostepne { background:#D1FAE5; color:#065F46; }
+        .badge-sprzedane { background:#FEE2E2; color:#991B1B; }
+        .badge-rezerwacja { background:#FEF3C7; color:#92400E; }
+        .badge-w-budowie { background:#DBEAFE; color:#1E40AF; }
+
+        .section-card { background:var(--ag-white); border-radius:var(--ag-radius-lg); padding:28px 32px; box-shadow:var(--ag-shadow); margin-bottom:24px; }
+        .section-card-title { font-size:15px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--ag-gold); margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+
+        .rzut-img { width:100%; max-height:400px; object-fit:contain; border-radius:var(--ag-radius); background:var(--ag-gray-50); display:block; }
+
+        .rooms-table { width:100%; border-collapse:collapse; font-size:14px; }
+        .rooms-table th { text-align:left; padding:10px 12px; font-size:12px; color:var(--ag-gray-600); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--ag-gray-200); }
+        .rooms-table td { padding:12px; border-bottom:1px solid var(--ag-gray-100); color:var(--ag-text); }
+        .rooms-table tr:last-child td { border-bottom:none; }
+
+        .standard-text { font-size:15px; line-height:1.75; color:var(--ag-gray-800); white-space:pre-line; }
+
+        /* Right column (sidebar) */
+        .sidebar {}
+
+        .price-card { background:var(--ag-navy); border-radius:var(--ag-radius-lg); padding:28px; box-shadow:var(--ag-shadow-lg); margin-bottom:20px; color:#fff; }
+        .price-label { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:8px; }
+        .price-main { font-family:'Montserrat',sans-serif; font-size:2rem; font-weight:800; color:var(--ag-gold); line-height:1; margin-bottom:6px; }
+        .price-m2 { font-size:14px; color:rgba(255,255,255,0.5); margin-bottom:24px; }
+        .btn-contact { display:block; background:var(--ag-gold); color:var(--ag-navy); text-align:center; padding:14px; border-radius:10px; font-weight:700; font-size:15px; text-decoration:none; transition:var(--ag-transition); margin-bottom:12px; }
+        .btn-contact:hover { background:var(--ag-gold-light); text-decoration:none; color:var(--ag-navy); }
+        .btn-contact-outline { display:block; background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.3); text-align:center; padding:13px; border-radius:10px; font-weight:600; font-size:14px; text-decoration:none; transition:var(--ag-transition); }
+        .btn-contact-outline:hover { border-color:var(--ag-gold); color:var(--ag-gold); text-decoration:none; }
+
+        .inv-info-card { background:var(--ag-white); border-radius:var(--ag-radius-lg); padding:24px; box-shadow:var(--ag-shadow); margin-bottom:20px; }
+        .inv-info-card h3 { font-size:14px; color:var(--ag-gray-600); text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+        .inv-info-item { display:flex; align-items:flex-start; gap:10px; font-size:14px; margin-bottom:12px; }
+        .inv-info-item:last-child { margin-bottom:0; }
+        .inv-info-item i { color:var(--ag-gold); width:18px; flex-shrink:0; margin-top:1px; }
+
+        .price-history-card { background:var(--ag-white); border-radius:var(--ag-radius-lg); padding:24px 28px; box-shadow:var(--ag-shadow); margin-bottom:20px; }
+        .price-history-card h3 { font-size:14px; color:var(--ag-gray-600); text-transform:uppercase; letter-spacing:1px; margin-bottom:20px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/" class="navbar-brand">
+        <div class="brand-logo">AG</div>
+        <div style="display:flex;flex-direction:column;line-height:1.1;margin-left:4px;">
+            <span class="brand-main">AG</span>
+            <span class="brand-sub">Construction</span>
+        </div>
+    </a>
+    <a href="/oferty/" class="nav-back"><i class="bi bi-arrow-left"></i> Wróć do ofert</a>
+</nav>
+
+<div class="page-wrap">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="/">Strona główna</a>
+        <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+        <a href="/oferty/">Oferty</a>
+        <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+        <a href="/inwestycje/{{ oferta.inwestycja.pk }}/">{{ oferta.inwestycja.nazwa }}</a>
+        <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+        <span style="color:var(--ag-text);">{{ oferta.numer_lokalu|default:oferta.adres }}</span>
+    </div>
+
+    <div class="detail-grid">
+
+        <!-- LEFT: main content -->
+        <div class="detail-main">
+
+            <!-- Hero image / floor plan -->
+            <div class="offer-hero">
+                {% if oferta.rzut %}
+                <img src="{{ oferta.rzut.url }}" class="offer-hero-img" alt="Rzut lokalu">
+                {% elif oferta.zdjecie %}
+                <img src="{{ oferta.zdjecie.url }}" class="offer-hero-img" alt="{{ oferta.adres }}">
+                {% else %}
+                <div class="offer-hero-placeholder">
+                    <i class="bi bi-layout-text-window"></i>
+                    <span style="font-size:15px;">Brak rzutu</span>
+                </div>
+                {% endif %}
+
+                <div class="offer-hero-body">
+                    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
+                        <h1 class="offer-title">
+                            Lokal {{ oferta.numer_lokalu|default:oferta.adres }}
+                        </h1>
+                        {% with oferta.status as st %}
+                        <span class="status-badge {% if st == 'dostepne' %}badge-dostepne{% elif st == 'sprzedane' %}badge-sprzedane{% elif st == 'rezerwacja' %}badge-rezerwacja{% else %}badge-w-budowie{% endif %}">
+                            {{ oferta.get_status_display }}
+                        </span>
+                        {% endwith %}
+                    </div>
+                    <a href="/inwestycje/{{ oferta.inwestycja.pk }}/" class="offer-inv-link">
+                        <i class="bi bi-buildings"></i> {{ oferta.inwestycja.nazwa }}
+                    </a>
+
+                    <div class="offer-specs">
+                        {% if oferta.metraz %}
+                        <div class="spec-item">
+                            <div class="spec-val">{{ oferta.metraz }} m²</div>
+                            <div class="spec-lbl">Metraż</div>
+                        </div>
+                        {% endif %}
+                        <div class="spec-item">
+                            <div class="spec-val">{{ oferta.pokoje }}</div>
+                            <div class="spec-lbl">Pokoje</div>
+                        </div>
+                        {% if oferta.pietro is not None %}
+                        <div class="spec-item">
+                            <div class="spec-val">{{ oferta.pietro }}</div>
+                            <div class="spec-lbl">Piętro</div>
+                        </div>
+                        {% endif %}
+                        {% if oferta.rodzaj_lokalu %}
+                        <div class="spec-item">
+                            <div class="spec-val" style="font-size:15px;">{{ oferta.rodzaj_lokalu }}</div>
+                            <div class="spec-lbl">Rodzaj</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pomieszczenia przynależne -->
+            {% if oferta.pomieszczenia.all %}
+            <div class="section-card">
+                <div class="section-card-title"><i class="bi bi-door-open"></i> Pomieszczenia przynależne</div>
+                <table class="rooms-table">
+                    <thead>
+                        <tr>
+                            <th>Pomieszczenie</th>
+                            <th>Powierzchnia</th>
+                            <th>Cena</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in oferta.pomieszczenia.all %}
+                        <tr>
+                            <td>{{ p.nazwa }}</td>
+                            <td>{% if p.powierzchnia %}{{ p.powierzchnia }} m²{% else %}—{% endif %}</td>
+                            <td>{% if p.cena %}{{ p.cena|floatformat:0 }} PLN{% else %}—{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            <!-- Standard wykończenia -->
+            {% if oferta.inwestycja.standard %}
+            <div class="section-card">
+                <div class="section-card-title"><i class="bi bi-gem"></i> Standard wykończenia</div>
+                <p class="standard-text">{{ oferta.inwestycja.standard }}</p>
+            </div>
+            {% endif %}
+
+            <!-- Świadczenia pieniężne -->
+            {% if oferta.swiadczenia.all %}
+            <div class="section-card">
+                <div class="section-card-title"><i class="bi bi-receipt"></i> Świadczenia pieniężne</div>
+                <table class="rooms-table">
+                    <thead><tr><th>Nazwa</th><th>Kwota</th><th>Opis</th></tr></thead>
+                    <tbody>
+                        {% for s in oferta.swiadczenia.all %}
+                        <tr>
+                            <td>{{ s.nazwa }}</td>
+                            <td>{{ s.kwota|floatformat:0 }} PLN</td>
+                            <td>{{ s.opis|default:"—" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            <!-- Rabaty -->
+            {% if oferta.rabaty.all %}
+            <div class="section-card">
+                <div class="section-card-title"><i class="bi bi-tag"></i> Rabaty</div>
+                <table class="rooms-table">
+                    <thead><tr><th>Nazwa</th><th>Wartość</th><th>Obowiązuje</th></tr></thead>
+                    <tbody>
+                        {% for r in oferta.rabaty.all %}
+                        <tr>
+                            <td>{{ r.nazwa }}</td>
+                            <td>{% if r.typ == 'procentowy' %}{{ r.wartosc }}%{% else %}{{ r.wartosc|floatformat:0 }} PLN{% endif %}</td>
+                            <td>{{ r.data_od|date:"d.m.Y" }} – {{ r.data_do|date:"d.m.Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- RIGHT: sidebar -->
+        <div class="sidebar">
+
+            <!-- Price card -->
+            <div class="price-card">
+                <div class="price-label">Cena</div>
+                {% if oferta.cena_aktualna %}
+                <div class="price-main">{{ oferta.cena_aktualna|floatformat:0 }} PLN</div>
+                {% if oferta.cena_m2_calc %}
+                <div class="price-m2">{{ oferta.cena_m2_calc|floatformat:0 }} PLN/m²</div>
+                {% endif %}
+                {% else %}
+                <div class="price-main" style="font-size:1.3rem;">Do negocjacji</div>
+                <div class="price-m2">&nbsp;</div>
+                {% endif %}
+                <a href="tel:+48000000000" class="btn-contact">
+                    <i class="bi bi-telephone-fill"></i>&nbsp; Zadzwoń teraz
+                </a>
+                <a href="mailto:biuro@agconstruction.pl" class="btn-contact-outline">
+                    <i class="bi bi-envelope"></i>&nbsp; Wyślij zapytanie
+                </a>
+            </div>
+
+            <!-- Investment info -->
+            <div class="inv-info-card">
+                <h3>Inwestycja</h3>
+                <div class="inv-info-item">
+                    <i class="bi bi-buildings"></i>
+                    <span>{{ oferta.inwestycja.nazwa }}</span>
+                </div>
+                <div class="inv-info-item">
+                    <i class="bi bi-geo-alt"></i>
+                    <span>{{ oferta.inwestycja.adres }}</span>
+                </div>
+                {% if oferta.inwestycja.termin_zakonczenia %}
+                <div class="inv-info-item">
+                    <i class="bi bi-calendar3"></i>
+                    <span>Termin: {{ oferta.inwestycja.termin_zakonczenia|date:"m.Y" }}</span>
+                </div>
+                {% endif %}
+                {% if oferta.numer_oferty %}
+                <div class="inv-info-item">
+                    <i class="bi bi-hash"></i>
+                    <span>Nr oferty: {{ oferta.numer_oferty }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Price history chart -->
+            {% if historia_cen|length > 1 %}
+            <div class="price-history-card">
+                <h3>Historia cen</h3>
+                <canvas id="priceChart" height="180"></canvas>
+            </div>
+            <script>
+            (function() {
+                const labels = [{% for c in historia_cen %}"{{ c.data|date:"d.m.Y" }}"{% if not forloop.last %},{% endif %}{% endfor %}];
+                const data = [{% for c in historia_cen %}{{ c.kwota }}{% if not forloop.last %},{% endif %}{% endfor %}];
+                new Chart(document.getElementById('priceChart'), {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [{
+                            data,
+                            borderColor: '#C9973A',
+                            backgroundColor: 'rgba(201,151,58,0.08)',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#C9973A',
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { ticks: { callback: v => v.toLocaleString('pl-PL') + ' PLN', font: { size: 11 } }, grid: { color: '#F1F3F5' } },
+                            x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+                        }
+                    }
+                });
+            })();
+            </script>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -75,6 +75,20 @@ def lista_ofert(request):
     return render(request, 'oferty/lista_ofert.html', {'oferty_data': oferty_data})
 
 
+def szczegoly_oferty(request, pk):
+    oferta = get_object_or_404(
+        Oferta.objects.select_related('inwestycja', 'rodzaj_lokalu')
+                      .prefetch_related('ceny', 'pomieszczenia', 'swiadczenia', 'rabaty'),
+        pk=pk
+    )
+    ceny = list(oferta.ceny.all())
+    oferta.cena_aktualna = ceny[-1].kwota if ceny else None
+    metraz = safe_float(oferta.metraz)
+    cena = safe_float(oferta.cena_aktualna)
+    oferta.cena_m2_calc = round(cena / metraz, 0) if cena and metraz else None
+    return render(request, 'oferty/szczegoly_oferty.html', {'oferta': oferta, 'historia_cen': ceny})
+
+
 def szczegoly_inwestycji(request, pk):
     inwestycja = get_object_or_404(Inwestycja, pk=pk)
     return render(request, 'oferty/szczegoly_inwestycji.html', {'inwestycja': inwestycja})

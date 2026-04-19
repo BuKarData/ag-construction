@@ -990,6 +990,59 @@
 
         .offer-row:hover { border-color: var(--ag-gold); background: var(--ag-gray-50); }
 
+        a.offer-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            border-radius: var(--ag-radius);
+            margin-bottom: 12px;
+            transition: var(--ag-transition);
+        }
+        a.offer-link .offer-row { margin-bottom: 0; }
+        a.offer-link:hover .offer-row { border-color: var(--ag-gold); background: var(--ag-gray-50); }
+        a.offer-link:hover .offer-row-name { color: var(--ag-gold); }
+
+        .popup-gallery-strip {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            margin-bottom: 24px;
+            padding-bottom: 4px;
+        }
+        .popup-gallery-strip img {
+            width: 160px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: var(--ag-transition);
+            border: 2px solid transparent;
+        }
+        .popup-gallery-strip img:hover { border-color: var(--ag-gold); transform: scale(1.03); }
+
+        .popup-standard-block {
+            background: rgba(201,151,58,0.07);
+            border-left: 3px solid var(--ag-gold);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        .popup-standard-block h4 {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--ag-gold);
+            margin-bottom: 8px;
+        }
+        .popup-standard-block p {
+            font-size: 14px;
+            color: var(--ag-gray-800);
+            line-height: 1.65;
+            white-space: pre-line;
+        }
+
         .offer-row-num {
             width: 48px;
             height: 48px;
@@ -1482,11 +1535,11 @@
                 <ul class="footer-contact-list">
                     <li>
                         <i class="bi bi-geo-alt"></i>
-                        <span>ul. Budowlana 1<br>00-000 Warszawa</span>
+                        <span>ul. Ignacego Paderewskiego 15<br>05-220 Zielonka</span>
                     </li>
                     <li>
                         <i class="bi bi-telephone"></i>
-                        <a href="tel:+48000000000" style="color:rgba(255,255,255,0.7);text-decoration:none;">+48 000 000 000</a>
+                        <a href="tel:+48000000000" style="color:rgba(255,255,255,0.7);text-decoration:none;">+48 508 396 695</a>
                     </li>
                     <li>
                         <i class="bi bi-envelope"></i>
@@ -1544,6 +1597,7 @@ const investmentsData = {
         name: "{{ inv.nazwa|default:""|escapejs }}",
         address: "{{ inv.adres|escapejs }}",
         desc: "{{ inv.opis|default:""|escapejs }}",
+        standard: "{{ inv.standard|default:""|escapejs }}",
         photos: [{% for z in inv.zdjecia.all %}"{{ z.obraz.url }}"{% if not forloop.last %},{% endif %}{% endfor %}],
         offers: [
             {% for o in inv.oferty.all %}
@@ -1578,17 +1632,34 @@ function showPopup(id) {
     };
 
     let html = '';
+
+    // Gallery strip
+    if (inv.photos && inv.photos.length > 0) {
+        html += '<div class="popup-gallery-strip">';
+        inv.photos.forEach((src, i) => {
+            html += `<img src="${src}" alt="Zdjęcie ${i+1}" onclick="openGalleryFromPopup(${JSON.stringify(inv.photos)}, ${i})">`;
+        });
+        html += '</div>';
+    }
+
+    // Description
     if (inv.desc) {
         html += `<p style="color:var(--ag-gray-600);font-size:14px;margin-bottom:24px;line-height:1.65;">${inv.desc}</p>`;
     }
 
+    // Standard wykończenia
+    if (inv.standard) {
+        html += `<div class="popup-standard-block"><h4><i class="bi bi-gem"></i>&nbsp; Standard wykończenia</h4><p>${inv.standard}</p></div>`;
+    }
+
+    // Offer rows (clickable)
     if (inv.offers.length > 0) {
         html += `<h4 style="font-size:16px;color:var(--ag-navy);margin-bottom:16px;">Lokale (${inv.offers.length})</h4>`;
         inv.offers.forEach(o => {
             const s = statusMap[o.status] || { label: o.status, cls: '' };
             const cena = o.cena ? parseInt(o.cena).toLocaleString('pl-PL') + ' PLN' : '—';
             const m2 = o.cena_m2 ? parseInt(o.cena_m2).toLocaleString('pl-PL') + ' PLN/m²' : '';
-            html += `
+            html += `<a href="/oferta/${o.id}/" class="offer-link">
             <div class="offer-row">
                 <div class="offer-row-num">${o.num}</div>
                 <div class="offer-row-info">
@@ -1602,7 +1673,8 @@ function showPopup(id) {
                     <div class="price-val">${cena}</div>
                     <div class="price-m2">${m2}</div>
                 </div>
-            </div>`;
+                <div style="color:var(--ag-gold);padding-left:12px;font-size:18px;"><i class="bi bi-chevron-right"></i></div>
+            </div></a>`;
         });
     } else {
         html += '<p style="color:var(--ag-gray-600);text-align:center;padding:32px;">Brak ofert dla tej inwestycji.</p>';
@@ -1628,6 +1700,14 @@ function openGallery(id) {
     currentGalleryImgs = inv.photos;
     currentGalleryIdx = 0;
     document.getElementById('galleryTitle').textContent = inv.name;
+    updateGallery();
+    document.getElementById('galleryModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function openGalleryFromPopup(photos, startIdx) {
+    currentGalleryImgs = photos;
+    currentGalleryIdx = startIdx;
     updateGallery();
     document.getElementById('galleryModal').classList.add('active');
     document.body.style.overflow = 'hidden';
