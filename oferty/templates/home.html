@@ -1328,7 +1328,7 @@
                             <div class="inv-stat-lbl">Lokale</div>
                         </div>
                         <div class="inv-stat">
-                            <div class="inv-stat-val">{{ inv._dostepne_count }}</div>
+                            <div class="inv-stat-val">{{ inv.dostepne_count }}</div>
                             <div class="inv-stat-lbl">Dostępne</div>
                         </div>
                         <div class="inv-stat">
@@ -1554,8 +1554,8 @@ const investmentsData = {
                 metraz: {% if o.metraz %}"{{ o.metraz }}"{% else %}null{% endif %},
                 pokoje: {{ o.pokoje }},
                 status: "{{ o.status }}",
-                cena: {% if o._aktualna_cena %}"{{ o._aktualna_cena }}"{% else %}null{% endif %},
-                cena_m2: {% if o._cena_m2 %}"{{ o._cena_m2 }}"{% else %}null{% endif %}
+                cena: {% if o.cena_aktualna %}"{{ o.cena_aktualna }}"{% else %}null{% endif %},
+                cena_m2: {% if o.cena_m2_calc %}"{{ o.cena_m2_calc }}"{% else %}null{% endif %}
             }{% if not forloop.last %},{% endif %}
             {% endfor %}
         ]

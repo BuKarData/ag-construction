@@ -24,15 +24,15 @@ def home(request):
     ).all()
 
     for inv in inwestycje:
-        inv._dostepne_count = 0
+        inv.dostepne_count = 0
         for oferta in inv.oferty.all():
             if oferta.status == 'dostepne':
-                inv._dostepne_count += 1
+                inv.dostepne_count += 1
             ceny = list(oferta.ceny.all())
-            oferta._aktualna_cena = ceny[-1].kwota if ceny else None
+            oferta.cena_aktualna = ceny[-1].kwota if ceny else None
             metraz = safe_float(oferta.metraz)
-            cena = safe_float(oferta._aktualna_cena)
-            oferta._cena_m2 = round(cena / metraz, 0) if cena and metraz else None
+            cena = safe_float(oferta.cena_aktualna)
+            oferta.cena_m2_calc = round(cena / metraz, 0) if cena and metraz else None
 
     return render(request, 'home.html', {'inwestycje': inwestycje})
 
