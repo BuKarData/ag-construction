@@ -24,7 +24,10 @@ def home(request):
     ).all()
 
     for inv in inwestycje:
+        inv._dostepne_count = 0
         for oferta in inv.oferty.all():
+            if oferta.status == 'dostepne':
+                inv._dostepne_count += 1
             ceny = list(oferta.ceny.all())
             oferta._aktualna_cena = ceny[-1].kwota if ceny else None
             metraz = safe_float(oferta.metraz)

@@ -1328,12 +1328,7 @@
                             <div class="inv-stat-lbl">Lokale</div>
                         </div>
                         <div class="inv-stat">
-                            <div class="inv-stat-val">
-                                {% with dostepne=inv.oferty.all %}
-                                {% for o in dostepne %}{% if o.status == 'dostepne' %}{% if forloop.last %}{{ forloop.counter }}{% endif %}{% endif %}{% endfor %}
-                                {% endwith %}
-                                {% comment %}Simpler: show count of available{% endcomment %}
-                            </div>
+                            <div class="inv-stat-val">{{ inv._dostepne_count }}</div>
                             <div class="inv-stat-lbl">Dostępne</div>
                         </div>
                         <div class="inv-stat">
@@ -1546,7 +1541,7 @@
 const investmentsData = {
     {% for inv in inwestycje %}
     {{ inv.id }}: {
-        name: {{ inv.nazwa|default:""|escapejs|json_script:"_"|slice:"1:-1" }},
+        name: "{{ inv.nazwa|default:""|escapejs }}",
         address: "{{ inv.adres|escapejs }}",
         desc: "{{ inv.opis|default:""|escapejs }}",
         photos: [{% for z in inv.zdjecia.all %}"{{ z.obraz.url }}"{% if not forloop.last %},{% endif %}{% endfor %}],
