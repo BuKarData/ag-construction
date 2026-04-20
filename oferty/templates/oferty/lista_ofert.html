@@ -56,9 +56,17 @@
         }
 
         .brand-logo {
-            height: 56px;
-            width: auto;
-            display: block;
+            width: 40px;
+            height: 40px;
+            background: var(--ag-gold);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--ag-navy);
         }
 
         .brand-text .brand-main {
@@ -553,7 +561,11 @@
 <!-- NAVBAR -->
 <nav class="navbar">
     <a href="/" class="navbar-brand">
-        <img src="{% static 'img/logo.png' %}" alt="AG Construction" class="brand-logo">
+        <div class="brand-logo">AG</div>
+        <div class="brand-text">
+            <span class="brand-main">AG</span>
+            <span class="brand-sub">Construction</span>
+        </div>
     </a>
     <ul class="nav-links">
         <li><a href="/#inwestycje">Inwestycje</a></li>

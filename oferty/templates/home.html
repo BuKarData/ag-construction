@@ -75,9 +75,18 @@
         }
 
         .brand-logo {
-            height: 56px;
-            width: auto;
-            display: block;
+            width: 44px;
+            height: 44px;
+            background: var(--ag-gold);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--ag-navy);
+            letter-spacing: -1px;
         }
 
         .brand-text {
@@ -1237,7 +1246,11 @@
 <!-- NAVBAR -->
 <nav class="navbar" id="navbar">
     <a href="/" class="navbar-brand">
-        <img src="{% static 'img/logo.png' %}" alt="AG Construction" class="brand-logo">
+        <div class="brand-logo">AG</div>
+        <div class="brand-text">
+            <span class="brand-main">AG</span>
+            <span class="brand-sub">Construction</span>
+        </div>
     </a>
     <ul class="nav-links">
         <li><a href="#inwestycje">Inwestycje</a></li>
@@ -1471,7 +1484,7 @@
         <div class="about-grid">
             <div class="about-visual">
                 <div class="about-img-main">
-                    <i class="bi bi-buildings"></i>
+                    <img src="{% static 'img/logo.png' %}" alt="AG Construction" style="max-width:70%;max-height:70%;object-fit:contain;">
                 </div>
                 <div class="about-badge-float">
                     <div class="big-num"><i class="bi bi-house-heart" style="font-size:2rem;"></i></div>
