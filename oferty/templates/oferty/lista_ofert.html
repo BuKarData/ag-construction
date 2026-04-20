@@ -1,4 +1,4 @@
-{% load oferty_filters %}
+{% load oferty_filters %}{% load static %}
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -56,17 +56,9 @@
         }
 
         .brand-logo {
-            width: 40px;
-            height: 40px;
-            background: var(--ag-gold);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            font-size: 16px;
-            color: var(--ag-navy);
+            height: 44px;
+            width: auto;
+            display: block;
         }
 
         .brand-text .brand-main {
@@ -561,11 +553,7 @@
 <!-- NAVBAR -->
 <nav class="navbar">
     <a href="/" class="navbar-brand">
-        <div class="brand-logo">AG</div>
-        <div class="brand-text">
-            <span class="brand-main">AG</span>
-            <span class="brand-sub">Construction</span>
-        </div>
+        <img src="{% static 'img/logo.png' %}" alt="AG Construction" class="brand-logo">
     </a>
     <ul class="nav-links">
         <li><a href="/#inwestycje">Inwestycje</a></li>
@@ -694,6 +682,7 @@
                     <th>Inwestycja</th>
                     <th>Adres / Lokal</th>
                     <th>Metraż</th>
+                    <th>Ogródek</th>
                     <th>Pokoje</th>
                     <th>Status</th>
                     <th>Cena</th>
@@ -711,6 +700,7 @@
                         {{ o.adres }}
                     </td>
                     <td>{% if o.metraz %}{{ o.metraz }} m²{% else %}—{% endif %}</td>
+                    <td>{% if o.ogrodek_metraz %}~{{ o.ogrodek_metraz }} m²{% else %}—{% endif %}</td>
                     <td>{{ o.pokoje }}</td>
                     <td>
                         <span class="table-status status-{{ o.status }}">{{ o.status|status_label }}</span>
