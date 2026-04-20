@@ -10,7 +10,7 @@ class Command(BaseCommand):
         User = get_user_model()
         username = os.environ.get('DJANGO_ADMIN_USER', 'admin')
         password = os.environ.get('DJANGO_ADMIN_PASSWORD', '')
-        email = os.environ.get('DJANGO_ADMIN_EMAIL', 'biuro@agconstruction.pl')
+        email = os.environ.get('DJANGO_ADMIN_EMAIL', 'agconstruction39@gmail.com')
 
         if not password:
             raise CommandError(

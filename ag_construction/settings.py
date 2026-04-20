@@ -148,6 +148,6 @@ COMPANY_KRS = '0001143637'
 COMPANY_REGON = ''
 COMPANY_ADDRESS = 'ul. Ignacego Paderewskiego 15, 05-220 Zielonka'
 COMPANY_PHONE = '+48 508 396 695'
-COMPANY_EMAIL = 'biuro@agconstruction.pl'
+COMPANY_EMAIL = 'agconstruction39@gmail.com'
 
 SITE_DOMAIN = config('SITE_DOMAIN', default='localhost')

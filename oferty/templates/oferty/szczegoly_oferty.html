@@ -1,4 +1,4 @@
-{% load oferty_filters %}
+{% load oferty_filters %}{% load static %}
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -25,7 +25,7 @@
         /* NAVBAR */
         .nav{background:var(--navy);padding:0 5%;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 16px rgba(0,0,0,.25);position:sticky;top:0;z-index:200;}
         .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
-        .nav-logo{width:38px;height:38px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;font-size:16px;color:var(--navy);}
+        .nav-logo{height:44px;width:auto;display:block;}
         .nav-name{display:flex;flex-direction:column;line-height:1.1;}
         .nav-name b{font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;color:#fff;letter-spacing:2px;}
         .nav-name small{font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
@@ -182,11 +182,7 @@
 
 <nav class="nav">
     <a href="/" class="nav-brand">
-        <div class="nav-logo">AG</div>
-        <div class="nav-name">
-            <b>AG</b>
-            <small>Construction</small>
-        </div>
+        <img src="{% static 'img/logo.png' %}" alt="AG Construction" class="nav-logo">
     </a>
     <a href="/oferty/" class="nav-back"><i class="bi bi-arrow-left"></i> Wróć do ofert</a>
 </nav>
@@ -355,7 +351,7 @@
                 <div class="price-m2">&nbsp;</div>
                 {% endif %}
                 <a href="tel:+48508396695" class="btn-call"><i class="bi bi-telephone-fill"></i>&nbsp; Zadzwoń teraz</a>
-                <a href="mailto:biuro@agconstruction.pl" class="btn-mail"><i class="bi bi-envelope"></i>&nbsp; Wyślij zapytanie</a>
+                <a href="mailto:agconstruction39@gmail.com" class="btn-mail"><i class="bi bi-envelope"></i>&nbsp; Wyślij zapytanie</a>
             </div>
 
             <!-- Investment info -->
