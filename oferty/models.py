@@ -76,6 +76,7 @@ class Oferta(models.Model):
     )
     rzut = models.ImageField(upload_to='rzuty/', blank=True, null=True, verbose_name='Rzut lokalu')
     pietro = models.IntegerField(blank=True, null=True, verbose_name='Piętro')
+    ogrodek_metraz = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True, verbose_name='Ogródek (m²)')
 
     class Meta:
         verbose_name = 'Oferta'

@@ -1,4 +1,4 @@
-{% load oferty_filters %}
+{% load oferty_filters %}{% load static %}
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -75,18 +75,9 @@
         }
 
         .brand-logo {
-            width: 44px;
             height: 44px;
-            background: var(--ag-gold);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            font-size: 18px;
-            color: var(--ag-navy);
-            letter-spacing: -1px;
+            width: auto;
+            display: block;
         }
 
         .brand-text {
@@ -1246,11 +1237,7 @@
 <!-- NAVBAR -->
 <nav class="navbar" id="navbar">
     <a href="/" class="navbar-brand">
-        <div class="brand-logo">AG</div>
-        <div class="brand-text">
-            <span class="brand-main">AG</span>
-            <span class="brand-sub">Construction</span>
-        </div>
+        <img src="{% static 'img/logo.png' %}" alt="AG Construction" class="brand-logo">
     </a>
     <ul class="nav-links">
         <li><a href="#inwestycje">Inwestycje</a></li>
@@ -1541,11 +1528,7 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <a href="/" class="navbar-brand" style="margin-bottom:0;">
-                    <div class="brand-logo">AG</div>
-                    <div class="brand-text">
-                        <span class="brand-main">AG</span>
-                        <span class="brand-sub">Construction</span>
-                    </div>
+                    <img src="{% static 'img/logo.png' %}" alt="AG Construction" style="height:50px;width:auto;">
                 </a>
                 <p class="brand-desc">
                     AG Construction – deweloper stawiający na jakość, nowoczesny design i doskonałą lokalizację. Budujemy Twoje miejsce.
@@ -1647,7 +1630,8 @@ const investmentsData = {
                 pokoje: {{ o.pokoje }},
                 status: "{{ o.status }}",
                 cena: {% if o.cena_aktualna %}"{{ o.cena_aktualna }}"{% else %}null{% endif %},
-                cena_m2: {% if o.cena_m2_calc %}"{{ o.cena_m2_calc }}"{% else %}null{% endif %}
+                cena_m2: {% if o.cena_m2_calc %}"{{ o.cena_m2_calc }}"{% else %}null{% endif %},
+                ogrodek: {% if o.ogrodek_metraz %}"{{ o.ogrodek_metraz }}"{% else %}null{% endif %}
             }{% if not forloop.last %},{% endif %}
             {% endfor %}
         ]
@@ -1724,7 +1708,7 @@ function showPopup(id) {
                 <div class="offer-row-info">
                     <div class="offer-row-name">${o.adres}</div>
                     <div class="offer-row-meta">
-                        ${o.metraz ? o.metraz + ' m²' : ''} ${o.pokoje ? '· ' + o.pokoje + ' pok.' : ''}
+                        ${o.metraz ? o.metraz + ' m²' : ''} ${o.pokoje ? '· ' + o.pokoje + ' pok.' : ''} ${o.ogrodek ? '· ogródek ' + o.ogrodek + ' m²' : ''}
                         &nbsp; <span class="badge-status-sm ${s.cls}">${s.label}</span>
                     </div>
                 </div>

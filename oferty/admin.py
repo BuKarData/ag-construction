@@ -62,7 +62,7 @@ class RabatyInline(admin.TabularInline):
 
 @admin.register(Oferta)
 class OfertaAdmin(admin.ModelAdmin):
-    list_display = ['numer_lokalu', 'inwestycja', 'adres', 'metraz', 'pokoje', 'status', 'aktualna_cena']
+    list_display = ['numer_lokalu', 'inwestycja', 'adres', 'metraz', 'ogrodek_metraz', 'pokoje', 'status', 'aktualna_cena']
     list_filter = ['status', 'inwestycja', 'rodzaj_lokalu']
     search_fields = ['numer_lokalu', 'numer_oferty', 'adres']
     inlines = [CenaInline, PomieszczeniaInline, SwiadczeniaInline, RabatyInline]
